@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensions -->
+    <dimen name="navListItemSize">14sp</dimen>
+
+    <dimen name="maxNavDrawerMobileWidth">280dp</dimen>
+    <dimen name="maxNavDrawerTabletWidth">320dp</dimen>
+    <dimen name="iconSideMargin">16dp</dimen>
+    <dimen name="textIconLeftMargin">36dp</dimen>
+
+    <!-- Strings -->
+    <string name="more">More</string>
+
+</resources>

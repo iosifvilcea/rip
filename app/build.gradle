@@ -1,0 +1,89 @@
+apply plugin: 'com.android.application'
+
+android {   //Configures all the parameters for the android build.
+    compileSdkVersion 23
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        applicationId "blankthings.rip"
+        minSdkVersion 19
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs {
+        debug {
+            def homePath = System.properties['user.home']
+            homePath += '/iosif/.android/debug.keystore'
+            storeFile file(homePath)
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+            storePassword 'android'
+        }
+
+        release {
+            storeFile file(KEYSTORE_PATH)
+            keyAlias KEY_ALIAS
+            storePassword KEYSTORE_PASSWORD
+            keyPassword KEY_PASSWORD
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            versionNameSuffix '-DEBUG'
+            signingConfig signingConfigs.debug
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix '-PRODUCTION'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    /** Google Support Library */
+    def SUPPORT_VERSION = '23.4.0'
+    compile "com.android.support:appcompat-v7:${SUPPORT_VERSION}"
+    compile "com.android.support:design:${SUPPORT_VERSION}"
+    compile "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
+    compile "com.android.support:cardview-v7:${SUPPORT_VERSION}"
+
+   /** Networking */
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
+    compile 'com.google.code.gson:gson:2.7'
+
+    /** Push Notifications */
+    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
+
+    /** Testing Framework */
+    androidTestCompile 'junit:junit:4.12'                   // androidTestCompile for the androidTest dir.
+    androidTestCompile 'org.mockito:mockito-core:2.6.9'
+
+    /** Media Loading */
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    /** Leak Canary Library for Memory Leaks */
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+
+    apply plugin: 'com.google.gms.google-services'
+}

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/nav_drawer_linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/drawerHeaderImage"
+            android:layout_width="match_parent"
+            android:background="@android:color/holo_blue_dark"
+            android:layout_height="130dp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            />
+
+        <FrameLayout
+            android:id="@+id/drawerFrame"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/softDivider"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            />
+
+    </LinearLayout>
+
+</merge>

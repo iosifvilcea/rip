@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Reddit in Pictures</string>
+    <string name="app_description">Main Version</string>
+
+    <string name="search">Search</string>
+    <string name="settings">Settings</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+
+    <string name="empty_card_header_text">Sorry, looks like there are no more images.</string>
+    <string name="empty_card_text">Browse Subreddits</string>
+</resources>
