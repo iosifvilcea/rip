@@ -88,7 +88,7 @@ public class Data {
     private String subredditId;
 
     @SerializedName("edited")    /**     NOTE: "Edited" sometimes returns as Boolean,      */
-    private Object edited;       /**            sometimes as Integer.                      */
+    private Object edited;       /**     NOTE:   sometimes as Integer.                      */
 
     @SerializedName("link_flair_css_class")
     private String linkFlairCssClass;

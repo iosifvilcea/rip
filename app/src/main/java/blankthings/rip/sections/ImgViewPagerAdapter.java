@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import blankthings.rip.api.redditmodels.Child;
-import blankthings.rip.sections.album.DynamicCardView;
+import blankthings.rip.sections.album.AlbumView;
 
 /**
  * Image ViewPager Adapter
@@ -35,11 +35,11 @@ public class ImgViewPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        final DynamicCardView dynamicCardView = new DynamicCardView(context);
-        dynamicCardView.addCardList((ArrayList<Child>) children);
+        final AlbumView albumView = new AlbumView(context);
+        albumView.addCardList((ArrayList<Child>) children);
 
-        container.addView(dynamicCardView);
-        return dynamicCardView;
+        container.addView(albumView);
+        return albumView;
     }
 
 

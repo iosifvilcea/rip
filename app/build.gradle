@@ -15,7 +15,7 @@ android {   //Configures all the parameters for the android build.
     signingConfigs {
         debug {
             def homePath = System.properties['user.home']
-            homePath += '/iosif/.android/debug.keystore'
+            homePath += '/.android/debug.keystore'
             storeFile file(homePath)
             keyAlias 'androiddebugkey'
             keyPassword 'android'

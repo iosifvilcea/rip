@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import blankthings.rip.api.redditmodels.ThingWrapper;
-import blankthings.rip.sections.album.DynamicCardAdapter;
-import blankthings.rip.sections.album.DynamicCardView;
+import blankthings.rip.sections.album.AlbumViewHolder;
+import blankthings.rip.sections.album.AlbumView;
+import blankthings.rip.sections.album.OnItemClickListener;
 
 /**
  * SearchAdapter
@@ -17,12 +18,13 @@ import blankthings.rip.sections.album.DynamicCardView;
  *
  * Created by iosifvilcea on 2/11/17.
  */
-public class SearchAdapter extends RecyclerView.Adapter<DynamicCardAdapter.DynamicViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<AlbumViewHolder> {
 
     public static final String TAG = SearchAdapter.class.getSimpleName();
     private Context context;
 
     private ArrayList<ThingWrapper> categories = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
 
 
     public SearchAdapter(final Context context) {
@@ -31,21 +33,26 @@ public class SearchAdapter extends RecyclerView.Adapter<DynamicCardAdapter.Dynam
 
 
     @Override
-    public DynamicCardAdapter.DynamicViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public AlbumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
-        final View view = new DynamicCardView(context);
-        return new DynamicCardAdapter.DynamicViewHolder(view);
+        final View view = new AlbumView(context);
+        return new AlbumViewHolder(view, onItemClickListener);
     }
 
 
     @Override
-    public void onBindViewHolder(DynamicCardAdapter.DynamicViewHolder holder, int position) {
+    public void onBindViewHolder(AlbumViewHolder holder, int position) {
         if (holder == null) {
             return;
         }
 
         // TODO 02/15/17
 
+    }
+
+
+    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
 

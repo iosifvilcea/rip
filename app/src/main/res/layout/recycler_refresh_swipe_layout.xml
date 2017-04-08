@@ -17,9 +17,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <include
-        android:id="@+id/empty_view_layout"
-        android:visibility="gone"
-        layout="@layout/empty_layout" />
-
 </merge>

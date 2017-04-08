@@ -15,18 +15,19 @@
         android:title="@string/more"
         android:icon="@drawable/more_action"
         app:showAsAction="ifRoom">
+
         <menu>
             <item
                 android:id="@+id/cardMenuItem"
-                android:title="CardView"/>
-            <item
-                android:id="@+id/smartViewMenuItem"
-                android:title="SmartView"/>
+                android:title="@string/card_view"/>
             <item
                 android:id="@+id/fullViewMenuItem"
-                android:title="FullView"/>
+                android:title="@string/full_view"/>
+            <item
+                android:id="@+id/gridViewMenuItem"
+                android:title="@string/grid_view"/>
         </menu>
-    </item>
 
+    </item>
 
 </menu>

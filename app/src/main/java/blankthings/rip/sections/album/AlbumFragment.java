@@ -2,7 +2,6 @@ package blankthings.rip.sections.album;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,33 +18,34 @@ import blankthings.rip.api.ApiController;
 import blankthings.rip.api.redditmodels.Child;
 import blankthings.rip.api.redditmodels.Thing;
 import blankthings.rip.api.redditmodels.ThingWrapper;
-import blankthings.rip.navigation.Navigator;
 import blankthings.rip.sections.base.BaseFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * SingleSubFragment
+ * AlbumFragment
  *
  * Created by iosifvilcea on 6/18/16.
  */
-public class SingleSubFragment extends BaseFragment {
+public class AlbumFragment extends BaseFragment {
 
+    public static final String TAG = AlbumFragment.class.getSimpleName();
     public static final String SUB_KEY = "sub_key";
+
     private String subValue = "";
     private String afterValue = "";
 
-    public static SingleSubFragment newInstance(final String subreddit) {
-        SingleSubFragment fragment = new SingleSubFragment();
+    protected AlbumView albumView;
+
+
+    public static AlbumFragment newInstance(final String subreddit) {
+        AlbumFragment fragment = new AlbumFragment();
         Bundle bundle = new Bundle();
         bundle.putString(SUB_KEY, subreddit);
         fragment.setArguments(bundle);
         return fragment;
     }
-
-    public static final String TAG = SingleSubFragment.class.getSimpleName();
-    protected DynamicCardView dynamicCardView;
 
 
     @Override
@@ -60,16 +60,15 @@ public class SingleSubFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        dynamicCardView = new DynamicCardView(getContext());
-        return dynamicCardView;
+        albumView = new AlbumView(getContext());
+        return albumView;
     }
 
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        dynamicCardView.setSwipeContainerListener(onRefreshListener);
-        dynamicCardView.setOnViewListener(onViewListener);
+        albumView.setOnViewActionListener(actionListener);
     }
 
 
@@ -103,19 +102,13 @@ public class SingleSubFragment extends BaseFragment {
         @Override
         public boolean onMenuItemClick(MenuItem item) {
             if (item.getItemId() == R.id.cardMenuItem) {
-
-                Log.e(TAG, "Card Menu clicked.");
-                // TODO - SWITCH TO CARD MENU
-
-            } else if (item.getItemId() == R.id.smartViewMenuItem) {
-
-                Log.e(TAG, "Smart Menu clicked.");
-                // TODO - SWITCH TO SMART MENU
+                albumView.setAlbumViewType(AlbumAdapter.ViewType.CARD_VIEW);
 
             } else if (item.getItemId() == R.id.fullViewMenuItem) {
+                albumView.setAlbumViewType(AlbumAdapter.ViewType.FULL_VIEW);
 
-                Log.e(TAG, "Full Menu clicked.");
-                // TODO - SWITCH TO FULL MENU
+            } else if (item.getItemId() == R.id.gridViewMenuItem) {
+                albumView.setAlbumViewType(AlbumAdapter.ViewType.GRID_VIEW);
 
             }
 
@@ -144,7 +137,7 @@ public class SingleSubFragment extends BaseFragment {
 
 
     private void fetchSub() {
-        Navigator.INSTANCE.startLoading();
+        navigator.startLoading();
         ApiController.getInstance().listingRequest(
                 "foodporn",
                 ApiController.SortType.HOT,
@@ -156,7 +149,7 @@ public class SingleSubFragment extends BaseFragment {
 
 
     private void fetchSubAfter() {
-        Navigator.INSTANCE.startLoading();
+        navigator.startLoading();
         ApiController.getInstance().listingRequest(
                 "foodporn",
                 ApiController.SortType.HOT,
@@ -182,15 +175,14 @@ public class SingleSubFragment extends BaseFragment {
         @Override
         public void onResponse(Call<Thing> call, Response<Thing> response) {
             navigator.stopLoading();
-            if (response.isSuccessful() && dynamicCardView != null) {
-                dynamicCardView.showEmptyList(false);
+            if (response.isSuccessful() && albumView != null) {
 
                 final ThingWrapper thingWrap = new ThingWrapper(response.body());
                 final ArrayList<Child> filteredCards = filterCardUrls(thingWrap);
 
                 afterValue = thingWrap.getAfter();
-                if (dynamicCardView != null) {
-                    dynamicCardView.addCardList(filteredCards);
+                if (albumView != null) {
+                    albumView.addCardList(filteredCards);
                 }
             }
         }
@@ -198,7 +190,6 @@ public class SingleSubFragment extends BaseFragment {
         @Override
         public void onFailure(Call<Thing> call, Throwable t) {
             navigator.stopLoading();
-            dynamicCardView.showEmptyList(true);
             Log.e(TAG, "aww no. Networked failed.");
             Log.e(TAG, t.getMessage());
         }
@@ -232,33 +223,25 @@ public class SingleSubFragment extends BaseFragment {
     /**
      * Endless Recycler Scroll
      *  When last item is scrolled to, fetch next subreddit items.
+    private final DynamicCardView.OnViewActionListener actionListener =
      */
-    private final OnViewListener onViewListener = new OnViewListener() {
+        AlbumView.OnViewActionListener actionListener =
+            new AlbumView.OnViewActionListener() {
+
         @Override
         public void onEndlessScrolled() {
             fetchSubAfter();
         }
-    };
 
+        @Override
+        public void onItemSwiped() {
+            // TODO: 4/8/17 Implement.
+        }
 
-    /**
-     * Swipe to Refresh layout.
-     * TODO - Refresh start view
-     */
-    private final SwipeRefreshLayout.OnRefreshListener onRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            dynamicCardView.setSwipeRefreshEnabled(false);
+            albumView.setSwipeRefreshEnabled(false);
             fetchSub();
         }
     };
-
-
-    /**
-     *  OnViewListener
-     *    interface for miscellaneous listeners.
-     */
-    protected interface OnViewListener {
-        void onEndlessScrolled();
-    }
 }

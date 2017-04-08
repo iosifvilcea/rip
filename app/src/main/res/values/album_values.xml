@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="grid_view">GridView</string>
+    <string name="full_view">FullView</string>
+    <string name="card_view">CardView</string>
+
+</resources>

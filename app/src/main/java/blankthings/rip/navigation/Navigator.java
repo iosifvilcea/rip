@@ -11,8 +11,8 @@ import blankthings.rip.MainActivity;
 import blankthings.rip.R;
 import blankthings.rip.sections.BaseWebViewFragment;
 import blankthings.rip.sections.ImgViewPagerFragment;
+import blankthings.rip.sections.album.AlbumFragment;
 import blankthings.rip.sections.home.HomeFragment;
-import blankthings.rip.sections.album.SingleSubFragment;
 import blankthings.rip.sections.search.SearchFragment;
 import blankthings.rip.sections.settings.SettingsFragment;
 
@@ -77,7 +77,7 @@ public enum Navigator {
     }
 
     public void toSingleSub(final String sub) {
-        replaceFragment(SingleSubFragment.newInstance(sub));
+        replaceFragment(AlbumFragment.newInstance(sub));
     }
 
     public void toSearch() {

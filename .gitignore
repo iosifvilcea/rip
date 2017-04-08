@@ -29,5 +29,3 @@ local.properties
 # Google Services (e.g. APIs or Firebase)
 app/google-services.json
 
-# Proguard
-app/proguard-rules.pro

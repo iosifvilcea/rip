@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 public class ThingWrapper {
 
+
     private final Thing thing;
     private final ArrayList<Child> children = new ArrayList<>();
+
 
     public ThingWrapper(final Thing thing) {
         if (thing == null) {
@@ -20,6 +22,7 @@ public class ThingWrapper {
         setupThingWrapper();
     }
 
+
     private void setupThingWrapper() {
         if (thing.getListing() == null || thing.getListing().getChildren() == null) {
             return;
@@ -28,17 +31,21 @@ public class ThingWrapper {
         children.addAll(thing.getListing().getChildren());
     }
 
+
     public String getBefore() {
         return thing.getListing().getBefore();
     }
+
 
     public String getAfter() {
         return thing.getListing().getAfter();
     }
 
+
     public ArrayList<Child> getChildren() {
         return children;
     }
+
 
     public String getChildTitle(final int position) {
         if (children != null
@@ -51,6 +58,5 @@ public class ThingWrapper {
 
         return "";
     }
-
 
 }
