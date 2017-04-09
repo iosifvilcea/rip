@@ -117,25 +117,6 @@ public class AlbumFragment extends BaseFragment {
     };
 
 
-    // TODO - REMOVE OR FIX PLS
-    // TODO - REMOVE OR FIX PLS
-    // TODO - REMOVE OR FIX PLS
-//    private void enable() {
-//        MainActivity mainActivity = (MainActivity) getActivity();
-//        Toolbar toolbar = mainActivity.getToolbar();
-//
-//        final AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
-//        if (true) {
-//            params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
-//                    | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
-//        } else {
-//            params.setScrollFlags(0);
-//        }
-//
-//        toolbar.setLayoutParams(params);
-//    }
-
-
     private void fetchSub() {
         navigator.startLoading();
         ApiController.getInstance().listingRequest(
@@ -178,7 +159,7 @@ public class AlbumFragment extends BaseFragment {
             if (response.isSuccessful() && albumView != null) {
 
                 final ThingWrapper thingWrap = new ThingWrapper(response.body());
-                final ArrayList<Child> filteredCards = filterCardUrls(thingWrap);
+                final ArrayList<Child> filteredCards = filterUrls(thingWrap);
 
                 afterValue = thingWrap.getAfter();
                 if (albumView != null) {
@@ -203,7 +184,7 @@ public class AlbumFragment extends BaseFragment {
      * @param thingWrapper Wrapper class
      * @return Filtered list of Urls.
      */
-    private ArrayList<Child> filterCardUrls(final ThingWrapper thingWrapper) {
+    private ArrayList<Child> filterUrls(final ThingWrapper thingWrapper) {
         final String key = "reddituploads";
         final ArrayList<Child> filteredCards = new ArrayList<>();
 

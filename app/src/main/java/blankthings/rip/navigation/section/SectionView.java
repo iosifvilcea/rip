@@ -1,4 +1,4 @@
-package blankthings.rip.navigation;
+package blankthings.rip.navigation.section;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.FrameLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import blankthings.rip.R;
 import blankthings.rip.sections.album.OnItemClickListener;
@@ -16,9 +18,9 @@ import blankthings.rip.sections.album.OnItemClickListener;
 
 public class SectionView extends FrameLayout {
 
-
     private static final String TAG = SectionView.class.getSimpleName();
-    private SectionAdapter adapter;
+
+    private ExpandableSectionAdapter adapter;
 
 
     public SectionView(Context context) {
@@ -29,20 +31,24 @@ public class SectionView extends FrameLayout {
 
 
     protected void setupViews() {
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        adapter = new SectionAdapter(getContext());
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        final List list = new ArrayList();
+        adapter = new ExpandableSectionAdapter(getContext(), list);
+
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
 
-    public void setSections(final ArrayList<SectionItem> items) {
+    public void setSections(final List<ParentSubSection> items) {
         if (adapter != null) {
-            adapter.setSections(items);
+            adapter.setParentList(items, false);
         }
     }
 
-    public SectionItem getSection(final int position) {
+
+    public ParentSubSection getSection(final int position) {
         return adapter.getSection(position);
     }
 

@@ -10,9 +10,13 @@ import android.widget.FrameLayout;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import blankthings.rip.MainActivity;
 import blankthings.rip.R;
+import blankthings.rip.navigation.section.ParentSubSection;
+import blankthings.rip.navigation.section.SectionView;
 import blankthings.rip.sections.album.OnItemClickListener;
 
 /**
@@ -97,28 +101,38 @@ public enum DrawerManager {
         }
 
         final SectionView sectionView = new SectionView(mainActivity);
-        sectionView.setSections(new ArrayList<SectionItem>() {{
-            add(new SectionItem(0, "Home", android.R.drawable.ic_delete, false));
-            add(new SectionItem(1, "AbandonedPorn", android.R.drawable.ic_dialog_alert, false));
-            add(new SectionItem(2, "Pictures", android.R.drawable.ic_input_add, false));
-            add(new SectionItem(3, "MaleLivingSpace", android.R.drawable.ic_menu_agenda, false));
-            add(new SectionItem(4, "Food", android.R.drawable.ic_media_next, false));
-            add(new SectionItem(5, "Food", android.R.drawable.ic_media_next, false));
-            add(new SectionItem(6, "Food", android.R.drawable.ic_media_next, false));
-            add(new SectionItem(7, "Food", android.R.drawable.ic_media_next, false));
-            add(new SectionItem(8, "Food", android.R.drawable.ic_media_next, false));
-            add(new SectionItem(9, "Food", android.R.drawable.ic_media_next, false));
-            add(new SectionItem(10, "Settings", android.R.drawable.ic_secure, true));
-        }});
-
+        sectionView.setSections(generateMockSection());
         sectionView.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                final SectionItem item = sectionView.getSection(position);
+                final ParentSubSection item = sectionView.getSection(position);
                 goToSelectedNavItem(item);
             }
         });
         return sectionView;
+    }
+
+
+    // TODO - Remove "mock".
+    private List<ParentSubSection> generateMockSection() {
+        return new ArrayList<ParentSubSection>() {{
+            add(new ParentSubSection("All"));
+            add(new ParentSubSection("AbandonedPorn"));
+            add(new ParentSubSection("Pictures"));
+            add(new ParentSubSection("MaleLivingSpace"));
+
+            ParentSubSection.SubSection kid1 = new ParentSubSection.SubSection("Steak", "steak");
+            ParentSubSection.SubSection kid2 = new ParentSubSection.SubSection("BBQ", "bbq");
+            ParentSubSection.SubSection kid3 = new ParentSubSection.SubSection("Burgers", "burgers");
+            List<ParentSubSection.SubSection> children = Arrays.asList(kid1, kid2, kid3);
+            ParentSubSection parentSubSection = new ParentSubSection("Meat", children);
+            add(parentSubSection);
+
+            add(new ParentSubSection("Pictures"));
+            add(new ParentSubSection("Pictures"));
+            add(new ParentSubSection("Pictures"));
+            add(new ParentSubSection("Pictures"));
+        }};
     }
 
 
@@ -133,34 +147,11 @@ public enum DrawerManager {
     /**
      * @param item - Navigation Section item
      */
-    private void goToSelectedNavItem(final SectionItem item) {
+    private void goToSelectedNavItem(final ParentSubSection item) {
         closeDrawer();
         item.setChecked(true);
-        toolbarManager.setTitle(item.getTitle());
-
-        switch (item.getId()) {
-            case 0:
-                navigator.toHome();
-                break;
-            case 1:
-                navigator.toSingleSub("roomporn");
-                break;
-            case 2:
-                navigator.toSingleSub("AmateurRoomPorn");
-                break;
-            case 3:
-                navigator.toSingleSub("Food");
-                break;
-            case 4:
-                navigator.toSingleSub("GifRecipes");
-                break;
-            case 5:
-                navigator.toSettings();
-                break;
-            default:
-                navigator.toHome();
-                break;
-        }
+        toolbarManager.setTitle(item.getDisplayName());
+        navigator.toSingleSub(item.getSubreddit());
     }
 
 
