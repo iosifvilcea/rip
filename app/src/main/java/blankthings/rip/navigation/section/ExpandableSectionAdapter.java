@@ -24,7 +24,7 @@ import blankthings.rip.tools.Utility;
  */
 
 public class ExpandableSectionAdapter
-        extends ExpandableRecyclerAdapter<ParentSubSection, ParentSubSection.SubSection,
+        extends ExpandableRecyclerAdapter<ParentSubSection, Section,
                                             SectionParentViewHolder, SectionChildViewHolder> {
 
     public static final String TAG = ExpandableSectionAdapter.class.getSimpleName();
@@ -32,7 +32,14 @@ public class ExpandableSectionAdapter
     private final LayoutInflater inflater;
     private final Context context;
     private List<ParentSubSection> sections;
-    private OnItemClickListener onItemClickListener;
+    private OnExpandableSectionListener onExpandableSectionListener;
+
+
+    public interface OnExpandableSectionListener {
+        void onItemClicked(final Section section);
+        void onItemLongClicked(int parentPosition);
+        void onItemSwiped(int parentPosition, int childPosition);
+    }
 
 
     public ExpandableSectionAdapter(final Context context,
@@ -72,43 +79,56 @@ public class ExpandableSectionAdapter
                 new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View view) {
-                        // TODO - Show dialog to add to Multi sub?
-                        // TODO - Show dialog to add to Multi sub?
-                        // TODO - Show dialog to add to Multi sub?
-                        Log.d(ExpandableSectionAdapter.class.getSimpleName(), "OnLongClicked.");
+                        if (onExpandableSectionListener != null) {
+                            onExpandableSectionListener.onItemLongClicked(parentPosition);
+                            return true;
+                        }
                         return false;
                     }
-                }, generateOnClickListener(parentPosition));
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onExpandableSectionListener != null) {
+                            final Section section = getSection(parentPosition, -1);
+                            onExpandableSectionListener.onItemClicked(section);
+                        }
+                    }
+                });
     }
 
 
     @Override
-    public void onBindChildViewHolder(@NonNull SectionChildViewHolder childViewHolder, int parentPosition,
-                                      final int childPosition, @NonNull ParentSubSection.SubSection child) {
-        childViewHolder.bind(child, generateOnClickListener(childPosition));
-    }
-
-
-    private View.OnClickListener generateOnClickListener(final int position) {
-        return new View.OnClickListener() {
+    public void onBindChildViewHolder(@NonNull SectionChildViewHolder childViewHolder, final int parentPosition,
+                                      final int childPosition, @NonNull Section child) {
+        childViewHolder.bind(child, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    Log.e(TAG, "Child pos: " + position);
-                    onItemClickListener.onItemClick(v, position);
+                if (onExpandableSectionListener != null) {
+                    final Section section = getSection(parentPosition, childPosition);
+                    onExpandableSectionListener.onItemClicked(section);
                 }
             }
-        };
+        });
     }
 
 
-
-    public ParentSubSection getSection(final int position) {
-        return sections.get(position);
+    public void setSections(final List<ParentSubSection> sections) {
+        this.sections = sections;
+        setParentList(sections, false);
     }
 
 
-    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
+    public Section getSection(final int parent, final int child) {
+        if (child == -1) {
+            return sections.get(parent);
+        } else {
+            List<Section> list = sections.get(parent).getChildList();
+            return list.get(child);
+        }
+    }
+
+
+    public void setOnExpandableSectionListener(final OnExpandableSectionListener listener) {
+        onExpandableSectionListener = listener;
     }
 }

@@ -10,61 +10,50 @@ import java.util.List;
  * Created by iosif on 4/8/17.
  */
 
-public class ParentSubSection implements Parent<ParentSubSection.SubSection> {
+public class ParentSubSection
+        extends Section
+        implements Parent<Section> {
+
+    protected boolean initiallyExpanded = false;
+    protected boolean hasChildren = false;
+    protected List<Section> children = null;
 
 
-    private String displayName;
-    private String subreddit;
-    private boolean isChecked;
-    private boolean initiallyExpanded;
-    private List<SubSection> children;
 
-
-    public ParentSubSection(final String displayName) {
-        this.displayName = displayName;
-        this.subreddit = displayName;
+    public ParentSubSection(final String id) {
+        super(id);
         children = new ArrayList<>();
     }
 
 
-    public ParentSubSection(final String displayName, final List<SubSection> children) {
-        this.displayName = displayName;
-        this.children = children;
-        generateSubreddit();
+    public ParentSubSection(final Object id, final String displayName) {
+        super(id, displayName);
+        children = new ArrayList<>();
     }
 
 
-    protected void generateSubreddit() {
+    public ParentSubSection(final String displayName, final List<Section> children) {
+        super(displayName);
+        this.children = children;
+        hasChildren = (children.size() > 0);
+        id = generateSubreddit();
+    }
+
+
+    protected String generateSubreddit() {
         final StringBuilder sb = new StringBuilder("");
         for (int i=0; i < children.size(); i++) {
 
-            final SubSection child = children.get(i);
-            sb.append(child.getSubreddit());
-            if (i < children.size()-1) {
-                sb.append("+");
+            final Section child = children.get(i);
+            if (child.getId() instanceof String) {
+                sb.append((String) child.id);
+                if (i < children.size()-1) {
+                    sb.append("+");
+                }
             }
         }
-        subreddit = sb.toString();
-    }
 
-
-    public String getSubreddit() {
-        return subreddit;
-    }
-
-
-    public void setSubreddits(String subreddit) {
-        this.subreddit = subreddit;
-    }
-
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+        return sb.toString();
     }
 
 
@@ -73,17 +62,8 @@ public class ParentSubSection implements Parent<ParentSubSection.SubSection> {
     }
 
 
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
-
-
     @Override
-    public List<SubSection> getChildList() {
+    public List<Section> getChildList() {
         return children;
     }
 
@@ -94,47 +74,12 @@ public class ParentSubSection implements Parent<ParentSubSection.SubSection> {
     }
 
 
-
-    /**
-     * Represents a Subreddit section model.
-     */
-    public static class SubSection {
-
-        private String displayName;
-        private String subreddit;
-        private boolean isChecked;
-
-        public SubSection(String displayName, String subreddit) {
-            this.displayName = displayName;
-            this.subreddit = subreddit;
-        }
-
-        public String getSubreddit() {
-            return subreddit;
-        }
-
-
-        public void setSubreddit(String subreddit) {
-            this.subreddit = subreddit;
-        }
-
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
-
-        public void setDisplayName(String displayName) {
-            this.displayName = displayName;
-        }
-
-        public boolean isChecked() {
-            return isChecked;
-        }
-
-        public void setChecked(boolean checked) {
-            isChecked = checked;
-        }
+    public boolean hasChildren() {
+        return hasChildren;
     }
 
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
+    }
 }

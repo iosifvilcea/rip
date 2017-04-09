@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.FrameLayout;
 
+import com.bignerdranch.expandablerecyclerview.model.Parent;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,27 +35,24 @@ public class SectionView extends FrameLayout {
     protected void setupViews() {
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        final List list = new ArrayList();
-        adapter = new ExpandableSectionAdapter(getContext(), list);
-
+        adapter = new ExpandableSectionAdapter(getContext(), new ArrayList());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
 
     public void setSections(final List<ParentSubSection> items) {
-        if (adapter != null) {
-            adapter.setParentList(items, false);
-        }
+        adapter.setSections(items);
     }
 
 
-    public ParentSubSection getSection(final int position) {
-        return adapter.getSection(position);
+    public Section getSection(final int parentPosition, final int childPosition) {
+        return adapter.getSection(parentPosition, childPosition);
     }
 
 
-    public void setOnItemClickListener(final OnItemClickListener onItemClickListener) {
-        adapter.setOnItemClickListener(onItemClickListener);
+    public void setOnExpandableSectionListener(
+            final ExpandableSectionAdapter.OnExpandableSectionListener listener) {
+        adapter.setOnExpandableSectionListener(listener);
     }
 }

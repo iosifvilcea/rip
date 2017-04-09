@@ -26,7 +26,7 @@ public class SectionChildViewHolder extends ChildViewHolder {
     }
 
 
-    public void bind(final ParentSubSection.SubSection child, final View.OnClickListener onClickListener) {
+    public void bind(final Section child, final View.OnClickListener onClickListener) {
         if (child == null) {
             return;
         }

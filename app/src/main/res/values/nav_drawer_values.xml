@@ -8,7 +8,4 @@
     <dimen name="iconSideMargin">16dp</dimen>
     <dimen name="textIconLeftMargin">36dp</dimen>
 
-    <!-- Strings -->
-    <string name="more">More</string>
-
 </resources>

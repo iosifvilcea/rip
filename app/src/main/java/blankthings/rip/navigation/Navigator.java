@@ -72,12 +72,38 @@ public enum Navigator {
     }
 
 
+    public void toFragmentWithId(final int id) {
+        switch (id) {
+            case R.id.explore:
+                toExplore();
+                break;
+
+            case R.id.search:
+                toSearch();
+                break;
+
+            case R.id.settings:
+                toSettings();
+                break;
+
+            case R.id.home:
+            default:
+                toHome();
+                break;
+        }
+    }
+
+
     public void toHome() {
         replaceFragment(HomeFragment.newInstance());
     }
 
     public void toSingleSub(final String sub) {
         replaceFragment(AlbumFragment.newInstance(sub));
+    }
+
+    public void toExplore() {
+        // TODO - Create explore fragment.
     }
 
     public void toSearch() {

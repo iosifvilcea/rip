@@ -15,9 +15,10 @@ import java.util.List;
 
 import blankthings.rip.MainActivity;
 import blankthings.rip.R;
+import blankthings.rip.navigation.section.ExpandableSectionAdapter;
 import blankthings.rip.navigation.section.ParentSubSection;
+import blankthings.rip.navigation.section.Section;
 import blankthings.rip.navigation.section.SectionView;
-import blankthings.rip.sections.album.OnItemClickListener;
 
 /**
  * Manages drawer items and header.
@@ -35,6 +36,44 @@ public enum DrawerManager {
     private static WeakReference<MainActivity> mainAct;
     private static Navigator navigator = Navigator.INSTANCE;
     private static ToolbarManager toolbarManager = ToolbarManager.INSTANCE;
+
+
+    private final View.OnClickListener doNothingOnClick = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            /** Absorbs clicks to prevent being able to click through the view. */
+        }
+    };
+
+
+
+    private final View.OnClickListener onHomeClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            openDrawer();
+        }
+    };
+
+
+    private final ExpandableSectionAdapter.OnExpandableSectionListener expandableSectionListener =
+            new ExpandableSectionAdapter.OnExpandableSectionListener() {
+                @Override
+                public void onItemClicked(final Section section) {
+                    goToSelectedNavItem(section);
+                }
+
+                @Override
+                public void onItemLongClicked(int parentPosition) {
+                    // TODO - Impl.
+                    Log.e(TAG, "OnItemLongClicked");
+                }
+
+                @Override
+                public void onItemSwiped(int parentPosition, int childPosition) {
+                    // TODO - Impl.
+                    Log.e(TAG, "OnItemSwiped");
+                }
+    };
 
 
     /**
@@ -85,13 +124,6 @@ public enum DrawerManager {
         content.addView(mainSection);
     }
 
-    private final View.OnClickListener doNothingOnClick = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            /** Absorbs clicks to prevent being able to click through the view. */
-        }
-    };
-
 
     private SectionView generateMainSection() {
         final MainActivity mainActivity = mainAct.get();
@@ -102,13 +134,7 @@ public enum DrawerManager {
 
         final SectionView sectionView = new SectionView(mainActivity);
         sectionView.setSections(generateMockSection());
-        sectionView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View itemView, int position) {
-                final ParentSubSection item = sectionView.getSection(position);
-                goToSelectedNavItem(item);
-            }
-        });
+        sectionView.setOnExpandableSectionListener(expandableSectionListener);
         return sectionView;
     }
 
@@ -116,42 +142,45 @@ public enum DrawerManager {
     // TODO - Remove "mock".
     private List<ParentSubSection> generateMockSection() {
         return new ArrayList<ParentSubSection>() {{
+
+            add(new ParentSubSection(R.id.home, "Home"));
+            add(new ParentSubSection(R.id.explore, "Explore"));
+            add(new ParentSubSection(R.id.search, "Search"));
+            add(new ParentSubSection(R.id.settings, "Settings"));
+
             add(new ParentSubSection("All"));
             add(new ParentSubSection("AbandonedPorn"));
             add(new ParentSubSection("Pictures"));
             add(new ParentSubSection("MaleLivingSpace"));
 
-            ParentSubSection.SubSection kid1 = new ParentSubSection.SubSection("Steak", "steak");
-            ParentSubSection.SubSection kid2 = new ParentSubSection.SubSection("BBQ", "bbq");
-            ParentSubSection.SubSection kid3 = new ParentSubSection.SubSection("Burgers", "burgers");
-            List<ParentSubSection.SubSection> children = Arrays.asList(kid1, kid2, kid3);
+            Section kid1 = new Section("Steak");
+            Section kid2 = new Section("Bbq");
+            Section kid3 = new Section("Burgers");
+
+            List<Section> children = Arrays.asList(kid1, kid2, kid3);
             ParentSubSection parentSubSection = new ParentSubSection("Meat", children);
             add(parentSubSection);
 
-            add(new ParentSubSection("Pictures"));
-            add(new ParentSubSection("Pictures"));
             add(new ParentSubSection("Pictures"));
             add(new ParentSubSection("Pictures"));
         }};
     }
 
 
-    private final View.OnClickListener onHomeClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            openDrawer();
-        }
-    };
-
-
     /**
      * @param item - Navigation Section item
      */
-    private void goToSelectedNavItem(final ParentSubSection item) {
+    private void goToSelectedNavItem(final Section item) {
         closeDrawer();
-        item.setChecked(true);
+        item.setSelected(true);
         toolbarManager.setTitle(item.getDisplayName());
-        navigator.toSingleSub(item.getSubreddit());
+
+        if (item.getId() instanceof String) {
+            navigator.toSingleSub((String) item.getId());
+
+        } else {
+            navigator.toFragmentWithId((Integer) item.getId());
+        }
     }
 
 
