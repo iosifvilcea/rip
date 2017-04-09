@@ -1,6 +1,10 @@
 package blankthings.rip.navigation.section;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
+
+import com.google.gson.internal.Primitives;
 
 import java.lang.ref.SoftReference;
 import java.util.List;
@@ -39,7 +43,6 @@ public class Section {
 
         this.isSelected = isSelected;
     }
-
 
     public Object getId() {
         return id;

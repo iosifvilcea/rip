@@ -36,7 +36,7 @@ public class ExpandableSectionAdapter
 
 
     public interface OnExpandableSectionListener {
-        void onItemClicked(final Section section);
+        void onItemClicked(final ParentSubSection section);
         void onItemLongClicked(int parentPosition);
         void onItemSwiped(int parentPosition, int childPosition);
     }
@@ -89,7 +89,8 @@ public class ExpandableSectionAdapter
                     @Override
                     public void onClick(View v) {
                         if (onExpandableSectionListener != null) {
-                            final Section section = getSection(parentPosition, -1);
+                            final ParentSubSection section = getSection(parentPosition, -1);
+                            refreshSelectedSection(section);
                             onExpandableSectionListener.onItemClicked(section);
                         }
                     }
@@ -104,7 +105,8 @@ public class ExpandableSectionAdapter
             @Override
             public void onClick(View v) {
                 if (onExpandableSectionListener != null) {
-                    final Section section = getSection(parentPosition, childPosition);
+                    final ParentSubSection section = getSection(parentPosition, childPosition);
+                    refreshSelectedSection(section);
                     onExpandableSectionListener.onItemClicked(section);
                 }
             }
@@ -118,12 +120,19 @@ public class ExpandableSectionAdapter
     }
 
 
-    public Section getSection(final int parent, final int child) {
+    public ParentSubSection getSection(final int parent, final int child) {
         if (child == -1) {
             return sections.get(parent);
         } else {
             List<Section> list = sections.get(parent).getChildList();
-            return list.get(child);
+            return new ParentSubSection(list.get(child));
+        }
+    }
+
+
+    protected void refreshSelectedSection(final Section section) {
+        for (Section s : sections) {
+            s.setSelected(section == s);
         }
     }
 

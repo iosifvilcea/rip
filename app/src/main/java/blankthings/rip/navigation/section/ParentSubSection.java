@@ -40,6 +40,12 @@ public class ParentSubSection
     }
 
 
+    public ParentSubSection(Section section) {
+        super(section.id, section.displayName, section.isSelected);
+        children = new ArrayList<>();
+    }
+
+
     protected String generateSubreddit() {
         final StringBuilder sb = new StringBuilder("");
         for (int i=0; i < children.size(); i++) {

@@ -18,13 +18,11 @@ public class SectionParentViewHolder extends ParentViewHolder {
 
     private View itemView;
     private TextView titleTv;
-    private View.OnLongClickListener onLongClicked;
 
 
     public SectionParentViewHolder(View itemView) {
         super(itemView);
         this.itemView = itemView;
-        this.itemView.setOnLongClickListener(onLongClickListener);
         titleTv = (TextView) itemView.findViewById(R.id.sectionTitle);
     }
 
@@ -39,25 +37,20 @@ public class SectionParentViewHolder extends ParentViewHolder {
             titleTv.setText(parent.getDisplayName());
         }
 
-        onLongClicked = onLongClickListener;
-        itemView.setOnClickListener(onClickListener);
+        itemView.setOnLongClickListener(onLongClickListener);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExpanded()) {
+                    collapseView();
+                } else {
+                    expandView();
+                }
+
+                if (onClickListener != null) {
+                    onClickListener.onClick(v);
+                }
+            }
+        });
     }
-
-
-    private final View.OnLongClickListener onLongClickListener = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View view) {
-            if (isExpanded()) {
-                collapseView();
-            } else {
-                expandView();
-            }
-
-            if (onLongClicked != null) {
-                onLongClicked.onLongClick(view);
-            }
-
-            return true;
-        }
-    };
 }

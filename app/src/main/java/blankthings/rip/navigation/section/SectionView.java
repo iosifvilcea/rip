@@ -46,7 +46,7 @@ public class SectionView extends FrameLayout {
     }
 
 
-    public Section getSection(final int parentPosition, final int childPosition) {
+    public ParentSubSection getSection(final int parentPosition, final int childPosition) {
         return adapter.getSection(parentPosition, childPosition);
     }
 

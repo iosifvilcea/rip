@@ -58,8 +58,10 @@ public enum DrawerManager {
     private final ExpandableSectionAdapter.OnExpandableSectionListener expandableSectionListener =
             new ExpandableSectionAdapter.OnExpandableSectionListener() {
                 @Override
-                public void onItemClicked(final Section section) {
-                    goToSelectedNavItem(section);
+                public void onItemClicked(final ParentSubSection section) {
+                    if (!section.hasChildren()) {
+                        goToSelectedNavItem(section);
+                    }
                 }
 
                 @Override
