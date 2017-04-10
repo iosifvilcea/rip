@@ -1,9 +1,12 @@
 package blankthings.rip.navigation.section;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
@@ -44,6 +47,8 @@ public class SectionView extends FrameLayout {
 
         final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCb);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        recyclerView.addItemDecoration(itemDecoration);
     }
 
 
@@ -79,6 +84,25 @@ public class SectionView extends FrameLayout {
                 listener.onItemSwiped(position);
                 adapter.removeItem(position);
             }
+        }
+    };
+
+
+    private RecyclerView.ItemDecoration itemDecoration = new RecyclerView.ItemDecoration() {
+
+        @Override
+        public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDraw(c, parent, state);
+        }
+
+        @Override
+        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
+            super.onDrawOver(c, parent, state);
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
         }
     };
 }

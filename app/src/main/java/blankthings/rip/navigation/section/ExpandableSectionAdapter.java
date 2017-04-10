@@ -159,7 +159,6 @@ public class ExpandableSectionAdapter
 
 
     public void removeItem(final int position) {
-        // TODO - Index out of bounds after several removals.
         sections.remove(position);
         notifyItemRemoved(position);
     }
