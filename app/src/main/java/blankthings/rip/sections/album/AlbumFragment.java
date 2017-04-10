@@ -120,7 +120,7 @@ public class AlbumFragment extends BaseFragment {
     private void fetchSub() {
         navigator.startLoading();
         ApiController.getInstance().listingRequest(
-                "foodporn",
+                subValue,
                 ApiController.SortType.HOT,
                 25,
                 null,
@@ -132,7 +132,7 @@ public class AlbumFragment extends BaseFragment {
     private void fetchSubAfter() {
         navigator.startLoading();
         ApiController.getInstance().listingRequest(
-                "foodporn",
+                afterValue,
                 ApiController.SortType.HOT,
                 25,
                 null,

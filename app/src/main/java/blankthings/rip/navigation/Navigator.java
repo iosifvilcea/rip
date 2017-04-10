@@ -98,37 +98,46 @@ public enum Navigator {
         replaceFragment(HomeFragment.newInstance());
     }
 
+
     public void toSingleSub(final String sub) {
         replaceFragment(AlbumFragment.newInstance(sub));
     }
+
 
     public void toExplore() {
         // TODO - Create explore fragment.
     }
 
+
     public void toSearch() {
         replaceFragment(SearchFragment.newInstance());
     }
+
 
     public void toImageVP() {
         replaceFragment(ImgViewPagerFragment.newInstance());
     }
 
+
     public void toSettings() {
         replaceFragment(SettingsFragment.newInstance());
     }
+
 
     public void toPrivacyPolicy() {
         toWebView(privacyUrl);
     }
 
+
     public void toTerms() {
         toWebView(termsUrl);
     }
 
+
     public void toCopyright() {
         toWebView(copyrightUrl);
     }
+
 
     public void toWebView(final String url) {
         replaceFragment(BaseWebViewFragment.newInstance(url));

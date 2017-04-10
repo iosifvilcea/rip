@@ -8,8 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import blankthings.rip.R;
 import blankthings.rip.sections.album.OnItemClickListener;
@@ -32,7 +36,9 @@ public class ExpandableSectionAdapter
     private final LayoutInflater inflater;
     private final Context context;
     private List<ParentSubSection> sections;
+    private Map<ParentSubSection, SectionParentViewHolder> parentViewHolders;
     private OnExpandableSectionListener onExpandableSectionListener;
+    private int lastCheckedPosition = -1;
 
 
     public interface OnExpandableSectionListener {
@@ -48,6 +54,7 @@ public class ExpandableSectionAdapter
         this.context = context;
         sections = parentList;
         inflater = LayoutInflater.from(context);
+        parentViewHolders = new HashMap<>();
     }
 
 
@@ -56,7 +63,7 @@ public class ExpandableSectionAdapter
     public SectionParentViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup,
                                                             int viewType) {
         final View view = inflater.inflate(R.layout.drawer_item, parentViewGroup, false);
-        return new SectionParentViewHolder(view);
+        return  new SectionParentViewHolder(view);
     }
 
 
@@ -65,9 +72,6 @@ public class ExpandableSectionAdapter
     public SectionChildViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup,
                                                           int viewType) {
         final View view = inflater.inflate(R.layout.drawer_item, childViewGroup, false);
-        float padding = Utility.dpToPixels(context, 15);
-        float paddingLeft = Utility.dpToPixels(context, 30);
-        view.setPadding((int)paddingLeft, (int)padding, (int)padding, (int)padding);
         return new SectionChildViewHolder(view);
     }
 
@@ -75,6 +79,7 @@ public class ExpandableSectionAdapter
     @Override
     public void onBindParentViewHolder(@NonNull SectionParentViewHolder parentViewHolder,
                                        final int parentPosition, @NonNull ParentSubSection parent) {
+        parentViewHolders.put(parent, parentViewHolder);
         parentViewHolder.bind(parent,
                 new View.OnLongClickListener() {
                     @Override
@@ -90,7 +95,7 @@ public class ExpandableSectionAdapter
                     public void onClick(View v) {
                         if (onExpandableSectionListener != null) {
                             final ParentSubSection section = getSection(parentPosition, -1);
-                            refreshSelectedSection(section);
+                            refreshSelectedSection(parentPosition);
                             onExpandableSectionListener.onItemClicked(section);
                         }
                     }
@@ -106,11 +111,14 @@ public class ExpandableSectionAdapter
             public void onClick(View v) {
                 if (onExpandableSectionListener != null) {
                     final ParentSubSection section = getSection(parentPosition, childPosition);
-                    refreshSelectedSection(section);
+                    refreshSelectedSection(parentPosition);
                     onExpandableSectionListener.onItemClicked(section);
                 }
             }
         });
+
+        final int size = sections.get(parentPosition).getChildList().size();
+        childViewHolder.showDivider(childPosition == size-1);
     }
 
 
@@ -130,10 +138,23 @@ public class ExpandableSectionAdapter
     }
 
 
-    protected void refreshSelectedSection(final Section section) {
-        for (Section s : sections) {
-            s.setSelected(section == s);
+    protected void refreshSelectedSection(final int parentPosition) {
+        if (lastCheckedPosition > -1) {
+            final ParentSubSection previousSelectedSection = sections.get(lastCheckedPosition);
+            if (previousSelectedSection != null) {
+                previousSelectedSection.setSelected(false);
+
+                final SectionParentViewHolder viewHolder = parentViewHolders.get(previousSelectedSection);
+                viewHolder.showMarker(false);
+            }
         }
+        lastCheckedPosition = parentPosition;
+
+        final ParentSubSection selectedSection = sections.get(parentPosition);
+        selectedSection.setSelected(true);
+
+        final SectionParentViewHolder viewHolder = parentViewHolders.get(selectedSection);
+        viewHolder.showMarker(true);
     }
 
 

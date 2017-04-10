@@ -59,15 +59,12 @@ public enum DrawerManager {
             new ExpandableSectionAdapter.OnExpandableSectionListener() {
                 @Override
                 public void onItemClicked(final ParentSubSection section) {
-                    if (!section.hasChildren()) {
-                        goToSelectedNavItem(section);
-                    }
+                    goToSelectedNavItem(section);
                 }
 
                 @Override
                 public void onItemLongClicked(int parentPosition) {
-                    // TODO - Impl.
-                    Log.e(TAG, "OnItemLongClicked");
+                    //
                 }
 
                 @Override
