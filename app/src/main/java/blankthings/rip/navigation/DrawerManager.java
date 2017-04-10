@@ -68,7 +68,7 @@ public enum DrawerManager {
                 }
 
                 @Override
-                public void onItemSwiped(int parentPosition, int childPosition) {
+                public void onItemSwiped(int parentPosition) {
                     // TODO - Impl.
                     Log.e(TAG, "OnItemSwiped");
                 }

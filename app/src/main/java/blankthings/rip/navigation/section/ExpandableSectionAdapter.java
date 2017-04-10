@@ -44,7 +44,7 @@ public class ExpandableSectionAdapter
     public interface OnExpandableSectionListener {
         void onItemClicked(final ParentSubSection section);
         void onItemLongClicked(int parentPosition);
-        void onItemSwiped(int parentPosition, int childPosition);
+        void onItemSwiped(int position);
     }
 
 
@@ -155,6 +155,13 @@ public class ExpandableSectionAdapter
 
         final SectionParentViewHolder viewHolder = parentViewHolders.get(selectedSection);
         viewHolder.showMarker(true);
+    }
+
+
+    public void removeItem(final int position) {
+        // TODO - Index out of bounds after several removals.
+        sections.remove(position);
+        notifyItemRemoved(position);
     }
 
 

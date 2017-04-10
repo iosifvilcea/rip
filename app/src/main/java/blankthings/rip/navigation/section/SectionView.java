@@ -3,8 +3,10 @@ package blankthings.rip.navigation.section;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.widget.FrameLayout;
 
+import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class SectionView extends FrameLayout {
     private static final String TAG = SectionView.class.getSimpleName();
 
     private ExpandableSectionAdapter adapter;
+    private ExpandableSectionAdapter.OnExpandableSectionListener listener;
 
 
     public SectionView(Context context) {
@@ -38,6 +41,9 @@ public class SectionView extends FrameLayout {
         adapter = new ExpandableSectionAdapter(getContext(), new ArrayList());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        final ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemTouchCb);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
 
@@ -53,6 +59,26 @@ public class SectionView extends FrameLayout {
 
     public void setOnExpandableSectionListener(
             final ExpandableSectionAdapter.OnExpandableSectionListener listener) {
+        this.listener = listener;
         adapter.setOnExpandableSectionListener(listener);
     }
+
+
+    private ItemTouchHelper.SimpleCallback itemTouchCb =
+            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.RIGHT, ItemTouchHelper.RIGHT) {
+        @Override
+        public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                              RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+            if (listener != null) {
+                final int position = viewHolder.getAdapterPosition();
+                listener.onItemSwiped(position);
+                adapter.removeItem(position);
+            }
+        }
+    };
 }

@@ -15,6 +15,7 @@ public class BaseFragment extends android.support.v4.app.Fragment implements OnB
     protected final DrawerManager drawerManager = DrawerManager.INSTANCE;
     protected final ToolbarManager toolbarManager = ToolbarManager.INSTANCE;
 
+
     @Override
     public void onBackPressed() {
     }
