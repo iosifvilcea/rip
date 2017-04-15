@@ -11,6 +11,7 @@ import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +45,7 @@ public class ExpandableSectionAdapter
     public interface OnExpandableSectionListener {
         void onItemClicked(final ParentSubSection section);
         void onItemLongClicked(int parentPosition);
-        void onItemSwiped(int position);
+        void onItemRemoved(int position);
     }
 
 
@@ -158,13 +159,28 @@ public class ExpandableSectionAdapter
     }
 
 
+    public void setOnExpandableSectionListener(final OnExpandableSectionListener listener) {
+        onExpandableSectionListener = listener;
+    }
+
+
     public void removeItem(final int position) {
         sections.remove(position);
         notifyItemRemoved(position);
     }
 
 
-    public void setOnExpandableSectionListener(final OnExpandableSectionListener listener) {
-        onExpandableSectionListener = listener;
+    public void onItemMoved(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(sections, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(sections, i, i - 1);
+            }
+        }
+
+        notifyItemMoved(fromPosition, toPosition);
     }
 }

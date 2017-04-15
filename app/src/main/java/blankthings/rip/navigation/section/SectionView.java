@@ -34,7 +34,6 @@ public class SectionView extends FrameLayout {
     private static final String TAG = SectionView.class.getSimpleName();
 
     private ExpandableSectionAdapter adapter;
-    private ExpandableSectionAdapter.OnExpandableSectionListener listener;
 
 
     public SectionView(Context context) {
@@ -71,68 +70,26 @@ public class SectionView extends FrameLayout {
 
     public void setOnExpandableSectionListener(
             final ExpandableSectionAdapter.OnExpandableSectionListener listener) {
-        this.listener = listener;
         adapter.setOnExpandableSectionListener(listener);
     }
 
 
     private ItemTouchHelper.SimpleCallback itemTouchCb =
-            new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                    ItemTouchHelper.RIGHT) {
 
-            Drawable background;
-            Drawable xMark;
-            int xMarkMargin;
-            boolean initiated;
-
-            {
-                background = new ColorDrawable(Color.RED);
-                xMark = ContextCompat.getDrawable(getContext(), R.drawable.ic_add_white_24dp);
-                xMark.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-                xMarkMargin = (int) getContext().getResources().getDimension(R.dimen.iconSideMargin);
-                initiated = true;
-            }
-
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                  RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-
-            @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
-                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                View itemView = viewHolder.itemView;
-
-                // draw red background
-                background.setBounds(itemView.getRight() + (int) dX, itemView.getTop(),
-                        itemView.getRight(), itemView.getBottom());
-                background.draw(c);
-
-                // draw x mark
-                int itemHeight = itemView.getBottom() - itemView.getTop();
-                int intrinsicWidth = xMark.getIntrinsicWidth();
-                int intrinsicHeight = xMark.getIntrinsicWidth();
-
-                int xMarkLeft = itemView.getRight() - xMarkMargin - intrinsicWidth;
-                int xMarkRight = itemView.getRight() - xMarkMargin;
-                int xMarkTop = itemView.getTop() + (itemHeight - intrinsicHeight)/2;
-                int xMarkBottom = xMarkTop + intrinsicHeight;
-                xMark.setBounds(xMarkLeft, xMarkTop, xMarkRight, xMarkBottom);
-
-                xMark.draw(c);
-
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                if (listener != null) {
-                    final int position = viewHolder.getAdapterPosition();
-                    listener.onItemSwiped(position);
-                    adapter.removeItem(position);
+                @Override
+                public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                    adapter.onItemMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                    return true;
                 }
-            }
+
+                @Override
+                public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                    adapter.removeItem(viewHolder.getAdapterPosition());
+                }
+
+                @Override public boolean isLongPressDragEnabled() { return true; }
+                @Override public boolean isItemViewSwipeEnabled() { return true; }
     };
 }
