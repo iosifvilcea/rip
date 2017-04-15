@@ -195,6 +195,10 @@ public class AlbumFragment extends BaseFragment {
                 continue;
             }
 
+            if (child.getData().getUrl().contains("/r/")) {
+                continue;
+            }
+
             fixAmpersandUrls(child);
             appendJpgToImgurUrls(child);
 
