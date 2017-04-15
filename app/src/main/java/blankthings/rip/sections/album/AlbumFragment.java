@@ -75,10 +75,9 @@ public class AlbumFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        toolbarManager.enableToolbarScroll(false);  // TODO - Why are we setting this as false then true?
+        toolbarManager.enableToolbarScroll(true);
         toolbarManager.showTabs(false);
 
-        toolbarManager.enableToolbarScroll(true);
     }
 
 
@@ -185,19 +184,42 @@ public class AlbumFragment extends BaseFragment {
      * @return Filtered list of Urls.
      */
     private ArrayList<Child> filterUrls(final ThingWrapper thingWrapper) {
-        final String key = "reddituploads";
         final ArrayList<Child> filteredCards = new ArrayList<>();
 
         for (final Child child : thingWrapper.getChildren()) {
-            final String url = child.getData().getUrl();
-            if (url.contains(key)) {
-                String fixedUrl = url.replaceAll("(&amp;)", "&");
-                child.getData().setUrl(fixedUrl);
+            if (child.getData() == null || child.getData().getUrl() == null) {
+                continue;
             }
+
+            if (child.getData().getUrl().contains("/comments/")) {
+                continue;
+            }
+
+            fixAmpersandUrls(child);
+            appendJpgToImgurUrls(child);
+
             filteredCards.add(child);
         }
 
         return filteredCards;
+    }
+
+
+    private void fixAmpersandUrls(final Child child) {
+        final String url = child.getData().getUrl();
+        if (url.contains("reddituploads")) {
+            String fixedUrl = url.replaceAll("(&amp;)", "&");
+            child.getData().setUrl(fixedUrl);
+        }
+    }
+
+
+    private void appendJpgToImgurUrls(final Child child) {
+        String url = child.getData().getUrl();
+        if (url.contains("imgur.com") && !url.contains(".jpg")) {
+            url = String.format("%s%s", child.getData().getUrl(),".jpg");
+            child.getData().setUrl(url);
+        }
     }
 
 
