@@ -50,7 +50,13 @@ public class DetailFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
-        // TODO: 4/16/17 disable drawer.
-        // TODO: 4/16/17 hide toolbar.
+        toolbarManager.hideToolbar();
+    }
+
+
+    @Override
+    public void onPause() {
+        toolbarManager.showToolbar();
+        super.onPause();
     }
 }

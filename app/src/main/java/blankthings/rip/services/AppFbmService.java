@@ -42,7 +42,7 @@ public class AppFbmService extends FirebaseMessagingService {
         final Notification notification = builder
                 .setContentTitle(title)
                 .setContentText(description)
-                .setSmallIcon(R.drawable.ic_notifications_white_18dp)
+                .setSmallIcon(R.drawable.ic_notifications)
                 .setGroup(NOTIFICATION_GROUP)
                 .build();
 
@@ -56,7 +56,7 @@ public class AppFbmService extends FirebaseMessagingService {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
         final Notification summaryNotification = builder
                 .setContentTitle(notificationId + " new notifications!")
-                .setSmallIcon(R.drawable.ic_notifications_white_18dp)
+                .setSmallIcon(R.drawable.ic_notifications)
                 .setStyle(new NotificationCompat.InboxStyle()
                         .addLine("n1 here")
                         .addLine("n2 here")
