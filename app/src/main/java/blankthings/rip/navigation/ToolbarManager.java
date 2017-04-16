@@ -100,4 +100,18 @@ public enum ToolbarManager {
         }
     }
 
+
+    public void hideToolbar() {
+        if (toolbar != null) {
+            toolbar.setVisibility(View.GONE);
+        }
+    }
+
+
+    public void showToolbar() {
+        if (toolbar != null) {
+            toolbar.setVisibility(View.VISIBLE);
+        }
+    }
+
 }

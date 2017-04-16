@@ -86,9 +86,17 @@ public class AlbumAdapter
 
         final Child child = items.get(position);
         final String url = child.getData().getUrl();
-        Glide.with(context)
-                .load(url)
-                .into(holder.image);
+
+        if (url.contains(".gif")) {
+            Glide.with(context)
+                    .load(url)
+                    .asGif()
+                    .into(holder.image);
+        } else {
+            Glide.with(context)
+                    .load(url)
+                    .into(holder.image);
+        }
     }
 
 

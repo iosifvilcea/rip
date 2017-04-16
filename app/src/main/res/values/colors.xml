@@ -14,5 +14,6 @@
 
     <color name="widgetTextColor">#303F9F</color>
 
-    <color name="transparent_black">#CC000000</color>
+    <color name="semi_transparent">#80000000</color>
+
 </resources>
