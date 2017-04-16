@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -44,6 +45,9 @@ public class DetailView extends LinearLayout {
     protected ImageButton saveBtn;
     protected ImageButton shareBtn;
     protected ImageButton downloadBtn;
+    protected LinearLayout bottomsheet;
+
+    protected BottomSheetBehavior bottomSheetBehavior;
 
 
     public DetailView(Context context) {
@@ -61,12 +65,7 @@ public class DetailView extends LinearLayout {
     protected void init() {
         configureParentView();
         configureImageZoom();
-
-        headerTxt = (TextView) findViewById(R.id.detail_header);
-        saveBtn = (ImageButton) findViewById(R.id.detail_option_save);
-        shareBtn = (ImageButton) findViewById(R.id.detail_option_share);
-        downloadBtn = (ImageButton) findViewById(R.id.detail_option_download);
-
+        configureBottomsheet();
     }
 
 
@@ -84,6 +83,15 @@ public class DetailView extends LinearLayout {
         detailImg.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
             @Override
             public void onSingleTapConfirmed() {
+                if (bottomSheetBehavior == null) {
+                    return;
+                }
+
+                if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+                    hideBottomsheet();
+                } else {
+                    showBottomsheet();
+                }
             }
         });
 
@@ -93,6 +101,31 @@ public class DetailView extends LinearLayout {
             public void onDoubleTap() {
             }
         });
+    }
+
+
+    private void configureBottomsheet() {
+        headerTxt = (TextView) findViewById(R.id.detail_header);
+        bottomsheet = (LinearLayout) findViewById(R.id.detail_bs_view);
+        saveBtn = (ImageButton) findViewById(R.id.detail_option_save);
+        shareBtn = (ImageButton) findViewById(R.id.detail_option_share);
+        downloadBtn = (ImageButton) findViewById(R.id.detail_option_download);
+
+        bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
+    }
+
+
+    public void showBottomsheet() {
+        if (bottomsheet != null) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        }
+    }
+
+
+    public void hideBottomsheet() {
+        if (bottomsheet != null) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
     }
 
 
