@@ -1,26 +1,16 @@
 package blankthings.rip.sections.album.detail;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -72,7 +62,7 @@ public class DetailView extends LinearLayout {
     private void configureParentView() {
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent_black));
+        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.semi_transparent));
         inflate(getContext(), R.layout.detail_layout, this);
     }
 

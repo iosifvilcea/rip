@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:layout_gravity="center"
+    android:background="@android:color/transparent"
     >
 
     <it.sephiroth.android.library.imagezoom.ImageViewTouch
         android:id="@+id/detail_image_view_touch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:background="@android:color/transparent"
         />
 
     <LinearLayout
@@ -19,9 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@color/black"
-        android:padding="5dp"
-        android:visibility="visible"
+        android:background="@color/bs_bg"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
         app:behavior_hideable="true"
         >
