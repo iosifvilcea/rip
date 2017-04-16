@@ -26,8 +26,7 @@
         android:layout_width="@dimen/maxNavDrawerMobileWidth"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:gravity="bottom"
-        android:background="@color/white">
+        android:gravity="bottom">
 
         <include
             layout="@layout/drawer_layout" />

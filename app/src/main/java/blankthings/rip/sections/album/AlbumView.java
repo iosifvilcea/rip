@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import blankthings.rip.R;
 import blankthings.rip.api.redditmodels.Child;
+import blankthings.rip.api.redditmodels.Data;
 
 /**
  * Contains three view types that resizes a recycler item's image.
@@ -116,6 +117,16 @@ public class AlbumView extends FrameLayout {
     public void setAlbumViewType(final AlbumAdapter.ViewType viewType) {
         configureLayoutManager(viewType);
         adapter.setAlbumViewType(viewType);
+    }
+
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        adapter.setOnItemClickListener(listener);
+    }
+
+
+    public Child getItem(int pos) {
+        return adapter.getItem(pos);
     }
 
 

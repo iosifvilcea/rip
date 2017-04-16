@@ -136,6 +136,11 @@ public class AlbumAdapter
     }
 
 
+    public Child getItem(int pos) {
+        return items.get(pos);
+    }
+
+
     public void clearItems() {
         items.clear();
         notifyDataSetChanged();
