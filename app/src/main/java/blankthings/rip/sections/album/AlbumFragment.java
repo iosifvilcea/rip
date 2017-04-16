@@ -19,6 +19,7 @@ import blankthings.rip.api.ApiController;
 import blankthings.rip.api.redditmodels.Child;
 import blankthings.rip.api.redditmodels.Thing;
 import blankthings.rip.api.redditmodels.ThingWrapper;
+import blankthings.rip.sections.album.detail.DetailFragment;
 import blankthings.rip.sections.base.BaseFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,7 +55,6 @@ public class AlbumFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         subValue = getArguments().getString(SUB_KEY);
-        fetchSub();
     }
 
 
@@ -70,6 +70,7 @@ public class AlbumFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         albumView.setOnViewActionListener(actionListener);
+        albumView.setOnItemClickListener(onItemClick);
     }
 
 
@@ -78,7 +79,7 @@ public class AlbumFragment extends BaseFragment {
         super.onResume();
         toolbarManager.enableToolbarScroll(true);
         toolbarManager.showTabs(false);
-
+        fetchSub();
     }
 
 
@@ -96,25 +97,6 @@ public class AlbumFragment extends BaseFragment {
         }
 
     }
-
-
-    private MenuItem.OnMenuItemClickListener menuItemClickListener = new MenuItem.OnMenuItemClickListener() {
-        @Override
-        public boolean onMenuItemClick(MenuItem item) {
-            if (item.getItemId() == R.id.cardMenuItem) {
-                albumView.setAlbumViewType(AlbumAdapter.ViewType.CARD_VIEW);
-
-            } else if (item.getItemId() == R.id.fullViewMenuItem) {
-                albumView.setAlbumViewType(AlbumAdapter.ViewType.FULL_VIEW);
-
-            } else if (item.getItemId() == R.id.gridViewMenuItem) {
-                albumView.setAlbumViewType(AlbumAdapter.ViewType.GRID_VIEW);
-
-            }
-
-            return true; // True if no other callbacks necessary.
-        }
-    };
 
 
     private void fetchSub() {
@@ -227,10 +209,28 @@ public class AlbumFragment extends BaseFragment {
     }
 
 
+    private MenuItem.OnMenuItemClickListener menuItemClickListener = new MenuItem.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if (item.getItemId() == R.id.cardMenuItem) {
+                albumView.setAlbumViewType(AlbumAdapter.ViewType.CARD_VIEW);
+
+            } else if (item.getItemId() == R.id.fullViewMenuItem) {
+                albumView.setAlbumViewType(AlbumAdapter.ViewType.FULL_VIEW);
+
+            } else if (item.getItemId() == R.id.gridViewMenuItem) {
+                albumView.setAlbumViewType(AlbumAdapter.ViewType.GRID_VIEW);
+
+            }
+
+            return true; // True if no other callbacks necessary.
+        }
+    };
+
+
     /**
      * Endless Recycler Scroll
      *  When last item is scrolled to, fetch next subreddit items.
-    private final DynamicCardView.OnViewActionListener actionListener =
      */
     private final AlbumView.OnViewActionListener actionListener =
             new AlbumView.OnViewActionListener() {
@@ -249,6 +249,17 @@ public class AlbumFragment extends BaseFragment {
         public void onRefresh() {
             albumView.setSwipeRefreshEnabled(false);
             fetchSub();
+        }
+    };
+
+
+    private final OnItemClickListener onItemClick = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View itemView, int position) {
+            final Child child = albumView.getItem(position);
+            final Bundle bundle = new Bundle();
+            bundle.putParcelable(DetailFragment.DETAIL_KEY, child);
+            navigator.toDetail(bundle);
         }
     };
 }

@@ -17,7 +17,6 @@ public class BaseFragment extends android.support.v4.app.Fragment implements OnB
 
 
     @Override
-    public void onBackPressed() {
-    }
+    public void onBackPressed() {}
 
 }

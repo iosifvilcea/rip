@@ -1,13 +1,17 @@
 
 package blankthings.rip.api.redditmodels;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import blankthings.rip.api.redditmodels.preview.Preview;
 
-public class Data {
+public class Data implements Parcelable {
 
     @SerializedName("contest_mode")
     private Boolean contestMode;
@@ -30,14 +34,15 @@ public class Data {
     @SerializedName("likes")
     private Boolean likes;
 
-    @SerializedName("suggested_sort")
-    private Object suggestedSort;
-
-    @SerializedName("user_reports")
-    private List<Object> userReports = null;
-
-    @SerializedName("secure_media")
-    private Object secureMedia;
+    // TODO: 4/16/17 - Needs concrete obj.
+//    @SerializedName("suggested_sort")
+//    private Object suggestedSort;
+//
+//    @SerializedName("user_reports")
+//    private List<Object> userReports = null;
+//
+//    @SerializedName("secure_media")
+//    private Object secureMedia;
 
     @SerializedName("saved")
     private Boolean saved;
@@ -51,8 +56,9 @@ public class Data {
     @SerializedName("clicked")
     private Boolean clicked;
 
-    @SerializedName("report_reasons")
-    private Object reportReasons;
+    // TODO: 4/16/17 - Needs concrete obj.
+//    @SerializedName("report_reasons")
+//    private Object reportReasons;
 
     @SerializedName("author")
     private String author;
@@ -87,8 +93,9 @@ public class Data {
     @SerializedName("subreddit_id")
     private String subredditId;
 
-    @SerializedName("edited")    /**     NOTE: "Edited" sometimes returns as Boolean,      */
-    private Object edited;       /**     NOTE:   sometimes as Integer.                      */
+    // TODO: 4/16/17 - Needs concrete obj.
+//    @SerializedName("edited")    /**     NOTE: "Edited" sometimes returns as Boolean,      */
+//    private Object edited;       /**     NOTE:   sometimes as Integer.                      */
 
     @SerializedName("link_flair_css_class")
     private String linkFlairCssClass;
@@ -99,8 +106,9 @@ public class Data {
     @SerializedName("downs")
     private Integer downs;
 
-    @SerializedName("mod_reports")
-    private List<Object> modReports = null;
+    // TODO: 4/16/17 - Needs concrete obj.
+//    @SerializedName("mod_reports")
+//    private List<Object> modReports = null;
 
     @SerializedName("archived")
     private Boolean archived;
@@ -231,29 +239,29 @@ public class Data {
         this.likes = likes;
     }
 
-    public Object getSuggestedSort() {
-        return suggestedSort;
-    }
-
-    public void setSuggestedSort(Object suggestedSort) {
-        this.suggestedSort = suggestedSort;
-    }
-
-    public List<Object> getUserReports() {
-        return userReports;
-    }
-
-    public void setUserReports(List<Object> userReports) {
-        this.userReports = userReports;
-    }
-
-    public Object getSecureMedia() {
-        return secureMedia;
-    }
-
-    public void setSecureMedia(Object secureMedia) {
-        this.secureMedia = secureMedia;
-    }
+//    public Object getSuggestedSort() {
+//        return suggestedSort;
+//    }
+//
+//    public void setSuggestedSort(Object suggestedSort) {
+//        this.suggestedSort = suggestedSort;
+//    }
+//
+//    public List<Object> getUserReports() {
+//        return userReports;
+//    }
+//
+//    public void setUserReports(List<Object> userReports) {
+//        this.userReports = userReports;
+//    }
+//
+//    public Object getSecureMedia() {
+//        return secureMedia;
+//    }
+//
+//    public void setSecureMedia(Object secureMedia) {
+//        this.secureMedia = secureMedia;
+//    }
 
     public Boolean getSaved() {
         return saved;
@@ -287,13 +295,13 @@ public class Data {
         this.clicked = clicked;
     }
 
-    public Object getReportReasons() {
-        return reportReasons;
-    }
-
-    public void setReportReasons(Object reportReasons) {
-        this.reportReasons = reportReasons;
-    }
+//    public Object getReportReasons() {
+//        return reportReasons;
+//    }
+//
+//    public void setReportReasons(Object reportReasons) {
+//        this.reportReasons = reportReasons;
+//    }
 
     public String getAuthor() {
         return author;
@@ -375,13 +383,13 @@ public class Data {
         this.subredditId = subredditId;
     }
 
-    public Object getEdited() {
-        return edited;
-    }
-
-    public void setEdited(Object edited) {
-        this.edited = edited;
-    }
+//    public Object getEdited() {
+//        return edited;
+//    }
+//
+//    public void setEdited(Object edited) {
+//        this.edited = edited;
+//    }
 
     public String getLinkFlairCssClass() {
         return linkFlairCssClass;
@@ -407,13 +415,13 @@ public class Data {
         this.downs = downs;
     }
 
-    public List<Object> getModReports() {
-        return modReports;
-    }
-
-    public void setModReports(List<Object> modReports) {
-        this.modReports = modReports;
-    }
+//    public List<Object> getModReports() {
+//        return modReports;
+//    }
+//
+//    public void setModReports(List<Object> modReports) {
+//        this.modReports = modReports;
+//    }
 
     public Boolean getArchived() {
         return archived;
@@ -567,4 +575,132 @@ public class Data {
         this.ups = ups;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.contestMode);
+        dest.writeString(this.bannedBy);
+        dest.writeString(this.domain);
+        dest.writeString(this.subreddit);
+        dest.writeString(this.selftextHtml);
+        dest.writeString(this.selftext);
+        dest.writeValue(this.likes);
+//        dest.writeParcelable(this.suggestedSort, flags);
+//        dest.writeList(this.userReports);
+//        dest.writeParcelable(this.secureMedia, flags);
+        dest.writeValue(this.saved);
+        dest.writeString(this.id);
+        dest.writeValue(this.gilded);
+        dest.writeValue(this.clicked);
+//        dest.writeParcelable(this.reportReasons, flags);
+        dest.writeString(this.author);
+//        dest.writeParcelable(this.media, flags);
+        dest.writeString(this.name);
+        dest.writeValue(this.score);
+//        dest.writeParcelable(this.approvedBy, flags);
+        dest.writeValue(this.over18);
+//        dest.writeParcelable(this.removalReason, flags);
+        dest.writeValue(this.hidden);
+//        dest.writeParcelable(this.preview, flags);
+        dest.writeString(this.thumbnail);
+        dest.writeString(this.subredditId);
+//        dest.writeParcelable(this.edited, flags);
+        dest.writeString(this.linkFlairCssClass);
+        dest.writeString(this.authorFlairCssClass);
+        dest.writeValue(this.downs);
+//        dest.writeList(this.modReports);
+        dest.writeValue(this.archived);
+        dest.writeValue(this.isSelf);
+        dest.writeValue(this.hideScore);
+        dest.writeValue(this.spoiler);
+        dest.writeString(this.permalink);
+        dest.writeValue(this.locked);
+        dest.writeValue(this.stickied);
+        dest.writeValue(this.created);
+        dest.writeString(this.url);
+        dest.writeString(this.authorFlairText);
+        dest.writeValue(this.quarantine);
+        dest.writeString(this.title);
+        dest.writeValue(this.createdUtc);
+        dest.writeString(this.linkFlairText);
+        dest.writeString(this.distinguished);
+        dest.writeValue(this.numComments);
+        dest.writeValue(this.visited);
+        dest.writeValue(this.numReports);
+        dest.writeValue(this.ups);
+    }
+
+    public Data() {
+    }
+
+    protected Data(Parcel in) {
+        this.contestMode = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.bannedBy = in.readString();
+        this.domain = in.readString();
+        this.subreddit = in.readString();
+        this.selftextHtml = in.readString();
+        this.selftext = in.readString();
+        this.likes = (Boolean) in.readValue(Boolean.class.getClassLoader());
+//        this.suggestedSort = in.readParcelable(Object.class.getClassLoader());
+//        this.userReports = new ArrayList<Object>();
+//        in.readList(this.userReports, Object.class.getClassLoader());
+//        this.secureMedia = in.readParcelable(Object.class.getClassLoader());
+        this.saved = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.id = in.readString();
+        this.gilded = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.clicked = (Boolean) in.readValue(Boolean.class.getClassLoader());
+//        this.reportReasons = in.readParcelable(Object.class.getClassLoader());
+        this.author = in.readString();
+        this.media = in.readParcelable(Object.class.getClassLoader());
+        this.name = in.readString();
+        this.score = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.approvedBy = in.readParcelable(Object.class.getClassLoader());
+        this.over18 = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.removalReason = in.readParcelable(Object.class.getClassLoader());
+        this.hidden = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.preview = in.readParcelable(Preview.class.getClassLoader());
+        this.thumbnail = in.readString();
+        this.subredditId = in.readString();
+//        this.edited = in.readParcelable(Object.class.getClassLoader());
+        this.linkFlairCssClass = in.readString();
+        this.authorFlairCssClass = in.readString();
+        this.downs = (Integer) in.readValue(Integer.class.getClassLoader());
+//        this.modReports = new ArrayList<Object>();
+//        in.readList(this.modReports, Object.class.getClassLoader());
+        this.archived = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.isSelf = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.hideScore = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.spoiler = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.permalink = in.readString();
+        this.locked = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.stickied = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.created = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.url = in.readString();
+        this.authorFlairText = in.readString();
+        this.quarantine = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.title = in.readString();
+        this.createdUtc = (Long) in.readValue(Long.class.getClassLoader());
+        this.linkFlairText = in.readString();
+        this.distinguished = in.readString();
+        this.numComments = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.visited = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.numReports = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.ups = (Integer) in.readValue(Integer.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Data> CREATOR = new Parcelable.Creator<Data>() {
+        @Override
+        public Data createFromParcel(Parcel source) {
+            return new Data(source);
+        }
+
+        @Override
+        public Data[] newArray(int size) {
+            return new Data[size];
+        }
+    };
 }

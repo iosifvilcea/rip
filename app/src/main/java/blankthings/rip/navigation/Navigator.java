@@ -1,5 +1,6 @@
 package blankthings.rip.navigation;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -110,8 +111,8 @@ public enum Navigator {
     }
 
 
-    public void toDetail() {
-        replaceFragment(DetailFragment.newInstance());
+    public void toDetail(final Bundle bundle) {
+        replaceFragment(DetailFragment.newInstance(bundle));
     }
 
 
