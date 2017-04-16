@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -170,7 +171,7 @@ public class AlbumFragment extends BaseFragment {
         @Override
         public void onFailure(Call<Thing> call, Throwable t) {
             navigator.stopLoading();
-            Log.e(TAG, "aww no. Networked failed.");
+            Toast.makeText(getContext(), R.string.error_network_failed, Toast.LENGTH_SHORT).show();
             Log.e(TAG, t.getMessage());
         }
     };
@@ -201,7 +202,6 @@ public class AlbumFragment extends BaseFragment {
 
             fixAmpersandUrls(child);
             appendJpgToImgurUrls(child);
-
             filteredCards.add(child);
         }
 
@@ -232,7 +232,7 @@ public class AlbumFragment extends BaseFragment {
      *  When last item is scrolled to, fetch next subreddit items.
     private final DynamicCardView.OnViewActionListener actionListener =
      */
-        AlbumView.OnViewActionListener actionListener =
+    private final AlbumView.OnViewActionListener actionListener =
             new AlbumView.OnViewActionListener() {
 
         @Override

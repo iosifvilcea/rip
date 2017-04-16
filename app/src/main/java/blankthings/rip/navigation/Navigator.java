@@ -12,6 +12,7 @@ import blankthings.rip.R;
 import blankthings.rip.sections.BaseWebViewFragment;
 import blankthings.rip.sections.ImgViewPagerFragment;
 import blankthings.rip.sections.album.AlbumFragment;
+import blankthings.rip.sections.album.detail.DetailFragment;
 import blankthings.rip.sections.home.HomeFragment;
 import blankthings.rip.sections.search.SearchFragment;
 import blankthings.rip.sections.settings.SettingsFragment;
@@ -99,13 +100,18 @@ public enum Navigator {
     }
 
 
+    public void toExplore() {
+        // TODO: 4/15/17 - Impl. Explore.
+    }
+
+
     public void toSingleSub(final String sub) {
         replaceFragment(AlbumFragment.newInstance(sub));
     }
 
 
-    public void toExplore() {
-        // TODO - Create explore fragment.
+    public void toDetail() {
+        replaceFragment(DetailFragment.newInstance());
     }
 
 

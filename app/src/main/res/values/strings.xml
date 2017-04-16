@@ -12,5 +12,6 @@
     <string name="empty_card_header_text">Sorry, looks like there are no more images.</string>
     <string name="empty_card_text">Browse Subreddits</string>
 
+    <string name="error_network_failed">Oh no! We are unable to connect to the internet right now.</string>
 
 </resources>
