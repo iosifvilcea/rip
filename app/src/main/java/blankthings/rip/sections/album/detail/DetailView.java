@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -69,7 +70,7 @@ public class DetailView extends LinearLayout {
 
     private void configureImageZoom() {
         detailImg = (ImageViewTouch) findViewById(R.id.detail_image_view_touch);
-        detailImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+        detailImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_IF_BIGGER);
         detailImg.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
             @Override
             public void onSingleTapConfirmed() {
@@ -87,9 +88,7 @@ public class DetailView extends LinearLayout {
 
 
         detailImg.setDoubleTapListener(new ImageViewTouch.OnImageViewTouchDoubleTapListener() {
-            @Override
-            public void onDoubleTap() {
-            }
+            @Override public void onDoubleTap() {}
         });
     }
 
@@ -102,6 +101,8 @@ public class DetailView extends LinearLayout {
         downloadBtn = (ImageButton) findViewById(R.id.detail_option_download);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
+        bottomSheetBehavior.setPeekHeight(200);
+        bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
 
 
@@ -150,4 +151,19 @@ public class DetailView extends LinearLayout {
     }
 
 
+    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
+            new BottomSheetBehavior.BottomSheetCallback() {
+                @Override
+                public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                }
+
+                @Override
+                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                    detailImg.animate()
+                            .scaleX(1 - (slideOffset/2))
+                            .scaleY(1 - (slideOffset/2))
+                            .setDuration(0)
+                            .start();
+                }
+            };
 }
