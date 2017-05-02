@@ -154,7 +154,9 @@ public class AlbumFragment extends BaseFragment {
         public void onFailure(Call<Thing> call, Throwable t) {
             navigator.stopLoading();
             Toast.makeText(getContext(), R.string.error_network_failed, Toast.LENGTH_SHORT).show();
-            Log.e(TAG, t.getMessage());
+            if (t != null) {
+                Log.e(TAG, t.getMessage());
+            }
         }
     };
 

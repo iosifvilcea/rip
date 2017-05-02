@@ -4,11 +4,15 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +21,7 @@ import com.bumptech.glide.Glide;
 
 import blankthings.rip.R;
 import blankthings.rip.api.redditmodels.Data;
+import blankthings.rip.tools.Utility;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
@@ -24,7 +29,7 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
  * Created by iosif on 4/15/17.
  */
 
-public class DetailView extends LinearLayout {
+public class DetailView extends CoordinatorLayout {
 
 
     public static final String TAG = DetailView.class.getSimpleName();
@@ -55,16 +60,14 @@ public class DetailView extends LinearLayout {
 
     protected void init() {
         configureParentView();
-        configureImageZoom();
         configureBottomsheet();
+        configureImageZoom();
     }
 
 
     private void configureParentView() {
-        setOrientation(VERTICAL);
-        setGravity(Gravity.CENTER);
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.semi_transparent));
         inflate(getContext(), R.layout.detail_layout, this);
+        setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_light));
     }
 
 
@@ -74,7 +77,9 @@ public class DetailView extends LinearLayout {
         detailImg.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
             @Override
             public void onSingleTapConfirmed() {
-                if (bottomSheetBehavior == null) {
+                if (bottomSheetBehavior == null
+                        || bottomSheetBehavior.STATE_DRAGGING == bottomSheetBehavior.getState()
+                        || bottomSheetBehavior.STATE_SETTLING == bottomSheetBehavior.getState()) {
                     return;
                 }
 
@@ -85,7 +90,6 @@ public class DetailView extends LinearLayout {
                 }
             }
         });
-
 
         detailImg.setDoubleTapListener(new ImageViewTouch.OnImageViewTouchDoubleTapListener() {
             @Override public void onDoubleTap() {}
@@ -101,7 +105,10 @@ public class DetailView extends LinearLayout {
         downloadBtn = (ImageButton) findViewById(R.id.detail_option_download);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
-        bottomSheetBehavior.setPeekHeight(200);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+        final int peek = headerTxt.getMeasuredHeight() * 2;
+        bottomSheetBehavior.setPeekHeight(peek);
         bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
     }
 
@@ -115,7 +122,7 @@ public class DetailView extends LinearLayout {
 
     public void hideBottomsheet() {
         if (bottomsheet != null) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 
@@ -160,8 +167,7 @@ public class DetailView extends LinearLayout {
                 @Override
                 public void onSlide(@NonNull View bottomSheet, float slideOffset) {
                     detailImg.animate()
-                            .scaleX(1 - (slideOffset/2))
-                            .scaleY(1 - (slideOffset/2))
+                            .translationY(1 - slideOffset)
                             .setDuration(0)
                             .start();
                 }

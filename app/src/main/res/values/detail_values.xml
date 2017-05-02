@@ -2,5 +2,6 @@
 <resources>
 
     <color name="bs_bg">#CC000000</color>
+    <dimen name="bs_height">300dp</dimen>
 
 </resources>
