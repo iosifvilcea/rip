@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,19 +30,22 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
  * Created by iosif on 4/15/17.
  */
 
-public class DetailView extends CoordinatorLayout {
+public class DetailView extends FrameLayout {
 
 
     public static final String TAG = DetailView.class.getSimpleName();
 
     protected Data subredditData;
 
+    protected View contentView;
+    protected View emptyView;
+    protected LinearLayout bottomsheet;
+
     protected TextView headerTxt;
     protected ImageViewTouch detailImg;
     protected ImageButton saveBtn;
     protected ImageButton shareBtn;
     protected ImageButton downloadBtn;
-    protected LinearLayout bottomsheet;
 
     protected BottomSheetBehavior bottomSheetBehavior;
 
@@ -66,8 +70,14 @@ public class DetailView extends CoordinatorLayout {
 
 
     private void configureParentView() {
-        inflate(getContext(), R.layout.detail_layout, this);
         setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.holo_green_light));
+        contentView = inflate(getContext(), R.layout.detail_layout, this);
+        emptyView = new TextView(getContext());
+        ((TextView)emptyView).setText("WTF?");
+        emptyView.setVisibility(GONE);
+
+        addView(contentView);
+        addView(emptyView);
     }
 
 
@@ -106,10 +116,20 @@ public class DetailView extends CoordinatorLayout {
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
 
-        final int peek = headerTxt.getMeasuredHeight() * 2;
-        bottomSheetBehavior.setPeekHeight(peek);
-        bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+
+    private void populateViews() {
+        if (!TextUtils.isEmpty(subredditData.getTitle())) {
+            headerTxt.setText(subredditData.getTitle());
+        }
+
+        // TODO: 4/16/17 set proper drawables.
+        Glide.with(getContext())
+                .load(subredditData.getUrl())
+//                .placeholder()
+                .error(android.R.drawable.stat_notify_error)
+                .into(detailImg);
     }
 
 
@@ -127,49 +147,26 @@ public class DetailView extends CoordinatorLayout {
     }
 
 
-
     public void setSubredditData(@Nullable Data data) {
         subredditData = data;
 
         if (data == null) {
             showEmptyView();
         } else {
+            showContentView();
             populateViews();
         }
     }
 
 
-    private void populateViews() {
-        if (!TextUtils.isEmpty(subredditData.getTitle())) {
-            headerTxt.setText(subredditData.getTitle());
-        }
-
-        // TODO: 4/16/17 set proper drawables.
-        Glide.with(getContext())
-                .load(subredditData.getUrl())
-//                .placeholder(...)
-//                .error(...)
-                .into(detailImg);
+    public void showEmptyView() {
+        emptyView.setVisibility(VISIBLE);
+        contentView.setVisibility(GONE);
     }
 
 
-    private void showEmptyView() {
-        // TODO: 4/16/17 show empty view.
+    private void showContentView() {
+        emptyView.setVisibility(GONE);
+        contentView.setVisibility(VISIBLE);
     }
-
-
-    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback =
-            new BottomSheetBehavior.BottomSheetCallback() {
-                @Override
-                public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                }
-
-                @Override
-                public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                    detailImg.animate()
-                            .translationY(1 - slideOffset)
-                            .setDuration(0)
-                            .start();
-                }
-            };
 }
