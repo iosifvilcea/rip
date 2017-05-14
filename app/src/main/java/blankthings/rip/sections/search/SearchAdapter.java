@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import blankthings.rip.api.redditmodels.ThingWrapper;
 import blankthings.rip.sections.album.AlbumViewHolder;
 import blankthings.rip.sections.album.AlbumView;
-import blankthings.rip.sections.album.OnItemClickListener;
+import blankthings.rip.views.OnItemClickListener;
 
 /**
  * SearchAdapter

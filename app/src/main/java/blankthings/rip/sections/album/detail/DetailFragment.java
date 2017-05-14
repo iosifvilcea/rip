@@ -2,13 +2,11 @@ package blankthings.rip.sections.album.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import blankthings.rip.api.redditmodels.Child;
-import blankthings.rip.api.redditmodels.Data;
 import blankthings.rip.sections.base.BaseFragment;
 
 /**
@@ -21,6 +19,7 @@ public class DetailFragment extends BaseFragment {
     public static final String TAG = DetailFragment.class.getSimpleName();
     public static final String DETAIL_KEY = "DETAIL_KEY";
 
+    protected Child child;
     protected DetailView detailView;
 
 
@@ -42,7 +41,7 @@ public class DetailFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final Child child = (Child) getArguments().get(DETAIL_KEY);
+        child = (Child) getArguments().get(DETAIL_KEY);
         detailView.setSubredditData(child.getData());
     }
 

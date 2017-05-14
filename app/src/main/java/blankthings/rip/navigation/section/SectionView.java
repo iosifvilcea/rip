@@ -1,29 +1,15 @@
 package blankthings.rip.navigation.section;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
 import android.widget.FrameLayout;
 
-import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.model.Parent;
-
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import blankthings.rip.MainActivity;
 import blankthings.rip.R;
-import blankthings.rip.sections.album.OnItemClickListener;
 
 /**
  * Created by iosifvilcea on 10/18/16.

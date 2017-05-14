@@ -1,5 +1,7 @@
 package blankthings.rip.sections.base;
 
+import android.util.Log;
+
 import blankthings.rip.navigation.DrawerManager;
 import blankthings.rip.navigation.Navigator;
 import blankthings.rip.navigation.ToolbarManager;
@@ -9,14 +11,13 @@ import blankthings.rip.navigation.ToolbarManager;
  *
  * Created by iosifvilcea on 6/18/16.
  */
-public class BaseFragment extends android.support.v4.app.Fragment implements OnBackPressedListener {
+public abstract class BaseFragment
+        extends android.support.v4.app.Fragment
+        implements OnBackPressedListener {
 
     protected final Navigator navigator = Navigator.INSTANCE;
     protected final DrawerManager drawerManager = DrawerManager.INSTANCE;
     protected final ToolbarManager toolbarManager = ToolbarManager.INSTANCE;
 
-
-    @Override
-    public void onBackPressed() {}
-
+    @Override public void onBackPressed() {}
 }

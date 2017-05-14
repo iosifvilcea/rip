@@ -2,23 +2,18 @@ package blankthings.rip.navigation.section;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import blankthings.rip.R;
-import blankthings.rip.sections.album.OnItemClickListener;
-import blankthings.rip.tools.Utility;
 
 /**
  * Contains a list of ParentSubSections which is either

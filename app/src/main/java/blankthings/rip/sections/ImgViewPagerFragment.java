@@ -26,7 +26,7 @@ import retrofit2.Response;
 
 public class ImgViewPagerFragment extends BaseFragment {
 
-    private static final String TAG = ImgViewPagerFragment.class.getSimpleName();
+    public static final String TAG = ImgViewPagerFragment.class.getSimpleName();
 
     public static ImgViewPagerFragment newInstance() {
         ImgViewPagerFragment fragment = new ImgViewPagerFragment();
@@ -35,6 +35,7 @@ public class ImgViewPagerFragment extends BaseFragment {
 
 
     private ImgViewPagerAdapter imgViewPagerAdapter;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

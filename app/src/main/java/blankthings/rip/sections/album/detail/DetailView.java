@@ -62,7 +62,8 @@ public class DetailView extends LinearLayout {
     private void configureParentView() {
         setOrientation(VERTICAL);
         setGravity(Gravity.CENTER);
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.semi_transparent));
+        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
+        setAlpha(0.8f);
         inflate(getContext(), R.layout.detail_layout, this);
     }
 
