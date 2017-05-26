@@ -15,6 +15,8 @@ import blankthings.rip.sections.base.BaseFragment;
 
 public class SettingsFragment extends BaseFragment {
 
+    public static String TAG = SettingsFragment.class.getSimpleName();
+
     public static SettingsFragment newInstance() {
         Bundle args = new Bundle();
 
@@ -34,6 +36,12 @@ public class SettingsFragment extends BaseFragment {
         return settingsView;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        toolbarManager.setTitle("Settings");
+    }
 
     private final View.OnClickListener onButtonClicked = new View.OnClickListener() {
         @Override

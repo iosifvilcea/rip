@@ -17,6 +17,9 @@ import blankthings.rip.sections.base.BaseFragment;
  */
 public class SearchFragment extends BaseFragment {
 
+    public static final String TAG = SearchFragment.class.getSimpleName();
+
+
     public static SearchFragment newInstance() {
         Bundle args = new Bundle();
 

@@ -1,4 +1,4 @@
-package blankthings.rip.sections.album;
+package blankthings.rip.views;
 
 import android.view.View;
 

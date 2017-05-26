@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import blankthings.rip.R;
 import blankthings.rip.api.redditmodels.Child;
+import blankthings.rip.views.OnItemClickListener;
 
 /**
  * Created by iosifvilcea on 10/20/16.

@@ -13,7 +13,8 @@ import java.util.ArrayList;
 
 import blankthings.rip.R;
 import blankthings.rip.api.redditmodels.Child;
-import blankthings.rip.api.redditmodels.Data;
+import blankthings.rip.views.EndlessRecyclerScrollListener;
+import blankthings.rip.views.OnItemClickListener;
 
 /**
  * Contains three view types that resizes a recycler item's image.

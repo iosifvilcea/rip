@@ -19,12 +19,13 @@ import blankthings.rip.sections.base.BaseFragment;
  * Created by iosifvilcea on 6/18/16.
  */
 public class HomeFragment extends BaseFragment {
+    public static final String TAG = HomeFragment.class.getSimpleName();
 
-    private static final String TAG = HomeFragment.class.getSimpleName();
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
+
 
     @Nullable
     @Override

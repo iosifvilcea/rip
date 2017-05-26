@@ -2,11 +2,16 @@ package blankthings.rip.navigation;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
+import org.w3c.dom.Text;
+
 import java.lang.ref.WeakReference;
+import java.util.List;
 
 import blankthings.rip.MainActivity;
 import blankthings.rip.R;
@@ -14,6 +19,7 @@ import blankthings.rip.sections.BaseWebViewFragment;
 import blankthings.rip.sections.ImgViewPagerFragment;
 import blankthings.rip.sections.album.AlbumFragment;
 import blankthings.rip.sections.album.detail.DetailFragment;
+import blankthings.rip.sections.base.BaseFragment;
 import blankthings.rip.sections.home.HomeFragment;
 import blankthings.rip.sections.search.SearchFragment;
 import blankthings.rip.sections.settings.SettingsFragment;
@@ -29,7 +35,6 @@ public enum Navigator {
     INSTANCE;
 
     private static final String TAG = Navigator.class.getSimpleName();
-
     private static final String privacyUrl = "https://www.reddit.com/help/privacypolicy/";
     private static final String termsUrl = "https://www.reddit.com/help/useragreement";
     private static final String copyrightUrl = "https://www.reddit.com/help/contentpolicy/";
@@ -58,18 +63,36 @@ public enum Navigator {
     }
 
 
-    /**
-     * @param fragment - fragment replacing existing fragment.
-     */
-    public void replaceFragment(final Fragment fragment) {
+    private void ensureValidFragment(final Fragment fragment) {
         final MainActivity mainActivity = mainActWeakRef.get();
-        if (null == mainActivity) {
-            return;
+        if (mainActivity == null) {
+            throw new IllegalStateException("Activity Reference cannot be null.");
         }
 
-        FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content, fragment);
-        transaction.addToBackStack(null);
+        if (!(fragment instanceof BaseFragment)) {
+            throw new IllegalArgumentException("Fragment is not an instance of BaseFragment.");
+        }
+    }
+
+
+    public void addFragment(final Fragment fragment, final String tag) {
+        ensureValidFragment(fragment);
+
+        final FragmentManager manager = mainActWeakRef.get().getSupportFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.content, fragment, tag);
+        transaction.addToBackStack(tag);
+        transaction.commit();
+    }
+
+
+    public void replaceFragment(final Fragment fragment, final String tag) {
+        ensureValidFragment(fragment);
+
+        final FragmentManager manager = mainActWeakRef.get().getSupportFragmentManager();
+        final FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.content, fragment, tag);
+        transaction.addToBackStack(tag);
         transaction.commit();
     }
 
@@ -97,7 +120,7 @@ public enum Navigator {
 
 
     public void toHome() {
-        replaceFragment(HomeFragment.newInstance());
+        replaceFragment(HomeFragment.newInstance(), HomeFragment.TAG);
     }
 
 
@@ -107,27 +130,27 @@ public enum Navigator {
 
 
     public void toSingleSub(final String sub) {
-        replaceFragment(AlbumFragment.newInstance(sub));
+        replaceFragment(AlbumFragment.newInstance(sub), AlbumFragment.TAG);
     }
 
 
     public void toDetail(final Bundle bundle) {
-        replaceFragment(DetailFragment.newInstance(bundle));
+        addFragment(DetailFragment.newInstance(bundle), DetailFragment.TAG);
     }
 
 
     public void toSearch() {
-        replaceFragment(SearchFragment.newInstance());
+        replaceFragment(SearchFragment.newInstance(), SearchFragment.TAG);
     }
 
 
     public void toImageVP() {
-        replaceFragment(ImgViewPagerFragment.newInstance());
+        replaceFragment(ImgViewPagerFragment.newInstance(), ImgViewPagerFragment.TAG);
     }
 
 
     public void toSettings() {
-        replaceFragment(SettingsFragment.newInstance());
+        replaceFragment(SettingsFragment.newInstance(), SettingsFragment.TAG);
     }
 
 
@@ -147,7 +170,7 @@ public enum Navigator {
 
 
     public void toWebView(final String url) {
-        replaceFragment(BaseWebViewFragment.newInstance(url));
+        replaceFragment(BaseWebViewFragment.newInstance(url), BaseWebViewFragment.TAG);
     }
 
 

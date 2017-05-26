@@ -17,7 +17,7 @@ import android.webkit.WebView;
 
 public class BaseWebViewFragment extends Fragment {
 
-    private static final String TAG = BaseWebViewFragment.class.getSimpleName();
+    public static final String TAG = BaseWebViewFragment.class.getSimpleName();
     private static final String DEFAULT_URL = "";
     private static final String URL_KEY = "url_key";
     private WebView webView;

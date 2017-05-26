@@ -21,6 +21,7 @@ import blankthings.rip.api.redditmodels.Thing;
 import blankthings.rip.api.redditmodels.ThingWrapper;
 import blankthings.rip.sections.album.detail.DetailFragment;
 import blankthings.rip.sections.base.BaseFragment;
+import blankthings.rip.views.OnItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,7 +32,6 @@ import retrofit2.Response;
  * Created by iosifvilcea on 6/18/16.
  */
 public class AlbumFragment extends BaseFragment {
-
     public static final String TAG = AlbumFragment.class.getSimpleName();
     public static final String SUB_KEY = "sub_key";
 
@@ -77,6 +77,7 @@ public class AlbumFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        toolbarManager.setTitle(subValue);
         toolbarManager.enableToolbarScroll(true);
         toolbarManager.showTabs(false);
         fetchSub();

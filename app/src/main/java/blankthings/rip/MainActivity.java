@@ -12,6 +12,7 @@ import java.util.List;
 import blankthings.rip.navigation.DrawerManager;
 import blankthings.rip.navigation.Navigator;
 import blankthings.rip.navigation.ToolbarManager;
+import blankthings.rip.sections.album.AlbumFragment;
 import blankthings.rip.sections.base.OnBackPressedListener;
 
 public class MainActivity extends AppCompatActivity {
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setupInitialFragment() {
-        navigator.toSingleSub("food");
+        final AlbumFragment albumFragment = AlbumFragment.newInstance("all");
+        navigator.addFragment(albumFragment, "home");
     }
 
 

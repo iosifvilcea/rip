@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import blankthings.rip.R;
+import blankthings.rip.views.OnItemClickListener;
 
 /**
  * Created by iosif on 4/8/17.
