@@ -1,5 +1,6 @@
 package blankthings.rip.sections.album;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -19,6 +20,7 @@ import blankthings.rip.api.ApiController;
 import blankthings.rip.api.redditmodels.Child;
 import blankthings.rip.api.redditmodels.Thing;
 import blankthings.rip.api.redditmodels.ThingWrapper;
+import blankthings.rip.receivers.ConnectivityReceiver;
 import blankthings.rip.sections.album.detail.DetailFragment;
 import blankthings.rip.sections.base.BaseFragment;
 import blankthings.rip.views.OnItemClickListener;
@@ -40,6 +42,8 @@ public class AlbumFragment extends BaseFragment {
 
     protected AlbumView albumView;
 
+    protected ConnectivityReceiver receiver;
+
 
     public static AlbumFragment newInstance(final String subreddit) {
         AlbumFragment fragment = new AlbumFragment();
@@ -55,6 +59,7 @@ public class AlbumFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         subValue = getArguments().getString(SUB_KEY);
+        receiver = new ConnectivityReceiver();
     }
 
 
@@ -81,6 +86,16 @@ public class AlbumFragment extends BaseFragment {
         toolbarManager.enableToolbarScroll(true);
         toolbarManager.showTabs(false);
         fetchSub();
+
+        final IntentFilter intentFilter = new IntentFilter(ConnectivityReceiver.AIRPLANE_MODE);
+        getContext().registerReceiver(receiver, intentFilter);
+    }
+
+
+    @Override
+    public void onPause() {
+        getContext().unregisterReceiver(receiver);
+        super.onPause();
     }
 
 
