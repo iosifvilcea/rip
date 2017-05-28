@@ -16,7 +16,6 @@ import com.bumptech.glide.Glide;
 
 import blankthings.rip.R;
 import blankthings.rip.api.redditmodels.Data;
-import blankthings.rip.views.ImageZoomView;
 import it.sephiroth.android.library.imagezoom.ImageViewTouch;
 import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
 
@@ -32,7 +31,7 @@ public class DetailView extends LinearLayout {
     protected Data subredditData;
 
     protected TextView headerTxt;
-    protected ImageZoomView detailImg;
+    protected ImageViewTouch detailImg;
     protected ImageButton saveBtn;
     protected ImageButton shareBtn;
     protected ImageButton downloadBtn;
@@ -70,7 +69,7 @@ public class DetailView extends LinearLayout {
 
 
     private void configureImageZoom() {
-        detailImg = (ImageZoomView) findViewById(R.id.detail_image_view_touch);
+        detailImg = (ImageViewTouch) findViewById(R.id.detail_image_view_touch);
         detailImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         detailImg.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
             @Override
