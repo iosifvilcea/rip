@@ -4,10 +4,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.Gravity;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,19 +22,17 @@ import it.sephiroth.android.library.imagezoom.ImageViewTouchBase;
  * Created by iosif on 4/15/17.
  */
 
-public class DetailView extends LinearLayout {
+public class DetailView extends FrameLayout {
 
 
     public static final String TAG = DetailView.class.getSimpleName();
-
-    protected Data subredditData;
+    protected LinearLayout bottomsheet;
 
     protected TextView headerTxt;
     protected ImageViewTouch detailImg;
     protected ImageButton saveBtn;
     protected ImageButton shareBtn;
     protected ImageButton downloadBtn;
-    protected LinearLayout bottomsheet;
 
     protected BottomSheetBehavior bottomSheetBehavior;
 
@@ -54,27 +51,25 @@ public class DetailView extends LinearLayout {
 
     protected void init() {
         configureParentView();
-        configureImageZoom();
         configureBottomsheet();
+        configureImageZoom();
     }
 
 
     private void configureParentView() {
-        setOrientation(VERTICAL);
-        setGravity(Gravity.CENTER);
-        setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black));
-        setAlpha(0.8f);
         inflate(getContext(), R.layout.detail_layout, this);
     }
 
 
     private void configureImageZoom() {
         detailImg = (ImageViewTouch) findViewById(R.id.detail_image_view_touch);
-        detailImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+        detailImg.setDisplayType(ImageViewTouchBase.DisplayType.FIT_IF_BIGGER);
         detailImg.setSingleTapListener(new ImageViewTouch.OnImageViewTouchSingleTapListener() {
             @Override
             public void onSingleTapConfirmed() {
-                if (bottomSheetBehavior == null) {
+                if (bottomSheetBehavior == null
+                        || bottomSheetBehavior.STATE_DRAGGING == bottomSheetBehavior.getState()
+                        || bottomSheetBehavior.STATE_SETTLING == bottomSheetBehavior.getState()) {
                     return;
                 }
 
@@ -96,6 +91,7 @@ public class DetailView extends LinearLayout {
         downloadBtn = (ImageButton) findViewById(R.id.detail_option_download);
 
         bottomSheetBehavior = BottomSheetBehavior.from(bottomsheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
 
@@ -108,40 +104,25 @@ public class DetailView extends LinearLayout {
 
     public void hideBottomsheet() {
         if (bottomsheet != null) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         }
     }
 
 
-
-    public void setSubredditData(@Nullable Data data) {
-        subredditData = data;
-
+    public void displaySubredditDetail(@Nullable Data data) {
         if (data == null) {
-            showEmptyView();
-        } else {
-            populateViews();
+            return;
         }
-    }
 
-
-    private void populateViews() {
-        if (!TextUtils.isEmpty(subredditData.getTitle())) {
-            headerTxt.setText(subredditData.getTitle());
+        if (!TextUtils.isEmpty(data.getTitle())) {
+            headerTxt.setText(data.getTitle());
         }
 
         // TODO: 4/16/17 set proper drawables.
         Glide.with(getContext())
-                .load(subredditData.getUrl())
-//                .placeholder(...)
-//                .error(...)
+                .load(data.getUrl())
+                .placeholder(android.R.drawable.ic_menu_mylocation)
+                .error(android.R.drawable.stat_notify_error)
                 .into(detailImg);
     }
-
-
-    private void showEmptyView() {
-        // TODO: 4/16/17 show empty view.
-    }
-
-
 }

@@ -42,7 +42,7 @@ public class DetailFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         child = (Child) getArguments().get(DETAIL_KEY);
-        detailView.setSubredditData(child.getData());
+        detailView.displaySubredditDetail(child.getData());
     }
 
 

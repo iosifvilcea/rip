@@ -1,5 +1,7 @@
 package blankthings.rip.navigation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -172,12 +174,41 @@ public enum Navigator {
 
 
     public void startLoading() {
-        loadingView.setVisibility(View.VISIBLE);
+        crossfadeLoading(true);
     }
 
 
     public void stopLoading() {
-        loadingView.setVisibility(View.GONE);
+        crossfadeLoading(false);
+    }
+
+
+    private void crossfadeLoading(boolean startLoading) {
+        int loadingAnimDuration = 400;
+        final float startAlpha, endingAlpha;
+        final int stopVisibility;
+        if (startLoading) {
+            startAlpha = 0f;
+            endingAlpha = 1f;
+            stopVisibility = View.VISIBLE;
+        } else {
+            startAlpha = 1f;
+            endingAlpha = 0f;
+            stopVisibility = View.GONE;
+        }
+
+        loadingView.setAlpha(startAlpha);
+        loadingView.setVisibility(View.VISIBLE);
+
+        loadingView.animate()
+                .alpha(endingAlpha)
+                .setDuration(loadingAnimDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        loadingView.setVisibility(stopVisibility);
+                    }
+                });
     }
 
 
