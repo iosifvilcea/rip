@@ -1,7 +1,5 @@
 package blankthings.rip.sections.base;
 
-import android.util.Log;
-
 import blankthings.rip.navigation.DrawerManager;
 import blankthings.rip.navigation.Navigator;
 import blankthings.rip.navigation.ToolbarManager;
@@ -19,5 +17,8 @@ public abstract class BaseFragment
     protected final DrawerManager drawerManager = DrawerManager.INSTANCE;
     protected final ToolbarManager toolbarManager = ToolbarManager.INSTANCE;
 
-    @Override public void onBackPressed() {}
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
 }

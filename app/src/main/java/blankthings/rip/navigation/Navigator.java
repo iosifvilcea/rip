@@ -1,17 +1,15 @@
 package blankthings.rip.navigation;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import org.w3c.dom.Text;
-
 import java.lang.ref.WeakReference;
-import java.util.List;
 
 import blankthings.rip.MainActivity;
 import blankthings.rip.R;
@@ -20,6 +18,7 @@ import blankthings.rip.sections.ImgViewPagerFragment;
 import blankthings.rip.sections.album.AlbumFragment;
 import blankthings.rip.sections.album.detail.DetailFragment;
 import blankthings.rip.sections.base.BaseFragment;
+import blankthings.rip.sections.base.OnBackPressedListener;
 import blankthings.rip.sections.home.HomeFragment;
 import blankthings.rip.sections.search.SearchFragment;
 import blankthings.rip.sections.settings.SettingsFragment;
@@ -175,11 +174,74 @@ public enum Navigator {
 
 
     public void startLoading() {
-        loadingView.setVisibility(View.VISIBLE);
+        crossfadeLoading(true);
     }
 
 
     public void stopLoading() {
-        loadingView.setVisibility(View.GONE);
+        crossfadeLoading(false);
+    }
+
+
+    private void crossfadeLoading(boolean startLoading) {
+        int loadingAnimDuration = 400;
+        final float startAlpha, endingAlpha;
+        final int stopVisibility;
+        if (startLoading) {
+            startAlpha = 0f;
+            endingAlpha = 1f;
+            stopVisibility = View.VISIBLE;
+        } else {
+            startAlpha = 1f;
+            endingAlpha = 0f;
+            stopVisibility = View.GONE;
+        }
+
+        loadingView.setAlpha(startAlpha);
+        loadingView.setVisibility(View.VISIBLE);
+
+        loadingView.animate()
+                .alpha(endingAlpha)
+                .setDuration(loadingAnimDuration)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        loadingView.setVisibility(stopVisibility);
+                    }
+                });
+    }
+
+
+    public boolean back() {
+        return onBackPressed();
+    }
+
+
+    private boolean onBackPressed() {
+        final MainActivity mainActivity = mainActWeakRef.get();
+        if (mainActivity == null) {
+            return false;
+        }
+
+        final FragmentManager fragmentManager = mainActivity.getSupportFragmentManager();
+        boolean backPressHandled = false;
+
+        /** Notifies visible fragment of backpress. */
+        final Fragment fragment = fragmentManager.findFragmentById(R.id.content);
+        if (fragment != null && fragment instanceof OnBackPressedListener) {
+            backPressHandled = ((OnBackPressedListener) fragment).onBackPressed();
+        }
+
+        if (!backPressHandled) {
+            if (fragmentManager.getBackStackEntryCount() > 1) {
+                fragmentManager.popBackStackImmediate();
+                backPressHandled = true;
+            } else {
+                fragmentManager.popBackStackImmediate();
+                backPressHandled = false;
+            }
+        }
+
+        return backPressHandled;
     }
 }

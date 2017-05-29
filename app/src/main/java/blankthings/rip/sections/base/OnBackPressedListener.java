@@ -6,5 +6,9 @@ package blankthings.rip.sections.base;
  * Created by iosifvilcea on 6/18/16.
  */
 public interface OnBackPressedListener {
-    void onBackPressed();
+
+    /**
+     *  @return true if handled.
+     */
+    boolean onBackPressed();
 }

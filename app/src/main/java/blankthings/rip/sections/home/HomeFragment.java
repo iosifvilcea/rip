@@ -2,8 +2,6 @@ package blankthings.rip.sections.home;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import blankthings.rip.R;
+import blankthings.rip.contentproviders.MediaResolverController;
 import blankthings.rip.sections.base.BaseFragment;
 
 /**
@@ -38,10 +37,11 @@ public class HomeFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Button button = (Button) view.findViewById(R.id.button);
+        button.setText("Query Images");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                navigator.toSingleSub("EarthPorn");
+                startQuerying();
             }
         });
 
@@ -67,23 +67,12 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        toolbarManager.setSearchView(queryTextListener);
+        toolbarManager.setSearchView(null /** TODO */);
     }
 
 
-    private SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener() {
-        @Override
-        public boolean onQueryTextSubmit(String query) {
-            // TODO - HANDLE.
-            Log.e(TAG, "onQueryTextSubmit.");
-            return false;
-        }
-
-        @Override
-        public boolean onQueryTextChange(String newText) {
-            // TODO - HANDLE.
-            Log.e(TAG, "onQueryTextChange.");
-            return false;
-        }
-    };
+    private void startQuerying() {
+        MediaResolverController controller = new MediaResolverController(getContext());
+        controller.findFirstItem();
+    }
 }
