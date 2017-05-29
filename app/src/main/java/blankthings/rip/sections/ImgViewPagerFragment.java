@@ -80,6 +80,8 @@ public class ImgViewPagerFragment extends BaseFragment {
             if (response.isSuccessful()) {
                 Log.e(TAG, "Successful.");
                 Thing listings = response.body();
+                // TODO: 5/29/17 populate IVP.
+
             } else {
 
                 String err = "Network Error.";

@@ -1,6 +1,5 @@
 package blankthings.rip.navigation;
 
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -144,6 +143,7 @@ public enum DrawerManager {
 
             add(new ParentSubSection(R.id.home, "Home"));
             add(new ParentSubSection(R.id.explore, "Explore"));
+            add(new ParentSubSection(R.id.saved, "Saved"));
             add(new ParentSubSection(R.id.search, "Search"));
             add(new ParentSubSection(R.id.settings, "Settings"));
 

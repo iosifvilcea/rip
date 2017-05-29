@@ -106,6 +106,10 @@ public enum Navigator {
                 toSearch();
                 break;
 
+            case R.id.saved:
+                toImageVP();
+                break;
+
             case R.id.settings:
                 toSettings();
                 break;

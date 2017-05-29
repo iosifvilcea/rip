@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 
 import blankthings.rip.R;
@@ -23,8 +21,6 @@ public class AlbumAdapter
 
 
     public static final String TAG = AlbumAdapter.class.getSimpleName();
-
-    private Context context;
     private ViewType albumViewType;
 
     private OnItemClickListener onItemClickListener;
@@ -43,13 +39,12 @@ public class AlbumAdapter
     }
 
 
-    public AlbumAdapter(final Context context) {
-        this(context, null);
+    public AlbumAdapter() {
+        albumViewType = ViewType.CARD_VIEW;
     }
 
 
-    public AlbumAdapter(final Context context, @Nullable final ViewType viewType) {
-        this.context = context;
+    public AlbumAdapter(@Nullable final ViewType viewType) {
         albumViewType = (viewType == null) ? ViewType.CARD_VIEW : viewType;
     }
 
@@ -81,23 +76,7 @@ public class AlbumAdapter
 
     @Override
     public void onBindViewHolder(AlbumViewHolder holder, int position) {
-        if (holder == null) {
-            return;
-        }
-
-        final Child child = items.get(position);
-        final String url = child.getData().getUrl();
-
-        if (url.contains(".gif")) {
-            Glide.with(context)
-                    .load(url)
-                    .asGif()
-                    .into(holder.image);
-        } else {
-            Glide.with(context)
-                    .load(url)
-                    .into(holder.image);
-        }
+        holder.bind(items.get(position));
     }
 
 
