@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
 
         navigator.initializeNavigator(this);
         setupNavigationManagers();
-        setupInitialFragment();
+
+        navigator.toHome();
+//        setupInitialFragment();
     }
 
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setupInitialFragment() {
-        final AlbumFragment albumFragment = AlbumFragment.newInstance("all");
+        final AlbumFragment albumFragment = AlbumFragment.newInstance("OldSchoolCool");
         navigator.addFragment(albumFragment, "home");
     }
 
