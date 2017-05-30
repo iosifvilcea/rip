@@ -3,6 +3,7 @@
 
     <item name="home" type="id"/>
     <item name="explore" type="id"/>
+    <item name="saved" type="id"/>
     <item name="search" type="id"/>
     <item name="settings" type="id"/>
 

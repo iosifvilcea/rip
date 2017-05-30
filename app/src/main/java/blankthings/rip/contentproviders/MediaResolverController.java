@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 /**
  * Controls a ContentResolver that accesses the MediaStore ContentProvider.
@@ -19,6 +20,7 @@ public class MediaResolverController {
 
     private static final Uri CONTENT_URI = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
+
     public MediaResolverController(final Context context) {
         contentResolver = context.getContentResolver();
     }
@@ -30,20 +32,22 @@ public class MediaResolverController {
         String selection = "";
         String [] selectionArgs = null;
 
-        int id = 0;
-        final Cursor cursor = contentResolver.query(
-                CONTENT_URI,
-                projection,
-                null,
-                null,
-                null);
+        final Cursor cursor = contentResolver.query(CONTENT_URI, projection, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
-            id = cursor.getColumnIndex(MediaStore.Images.Media._ID);
+            int id = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+            String data = cursor.getString(id);
+
+            Log.e(TAG, "Id: " + id + " Data: " + data);
+
+            while (cursor.moveToNext()) {
+                id = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                data = cursor.getString(id);
+                Log.e(TAG, "Id: " + id + " Data: " + data);
+            }
 
             cursor.close();
         }
 
-        // TODO: 5/28/17 display item. 
     }
 }

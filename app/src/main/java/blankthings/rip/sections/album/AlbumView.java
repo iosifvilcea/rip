@@ -56,7 +56,7 @@ public class AlbumView extends FrameLayout {
 
 
     protected void setupViews(final AlbumAdapter.ViewType viewType) {
-        adapter = new AlbumAdapter(getContext(), viewType);
+        adapter = new AlbumAdapter(viewType);
 
         final View view = inflate(getContext(), R.layout.recycler_refresh_swipe_layout, this);
         recyclerView = (RecyclerView) view.findViewById(R.id.refreshRecyclerView);
