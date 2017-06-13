@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import blankthings.rip.api.redditmodels.Thing;
-import blankthings.rip.navigation.Navigator;
+import blankthings.rip.navigation.NavigatorImpl;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -67,7 +67,7 @@ public class ApiController {
 
         if (TextUtils.isEmpty(subreddit)) {
             Log.e(TAG, "Sub-reddit parameter cannot be empty.");
-            Navigator.INSTANCE.stopLoading();
+            NavigatorImpl.INSTANCE.stopLoading();
             return;
         }
 

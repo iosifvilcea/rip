@@ -1,4 +1,4 @@
-package blankthings.rip.sections;
+package blankthings.rip.sections.imageviewpager;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;

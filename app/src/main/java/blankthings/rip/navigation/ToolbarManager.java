@@ -30,7 +30,7 @@ public enum ToolbarManager {
     private static Toolbar toolbar;
     private static TabLayout tabLayout;
     private static WeakReference<MainActivity> mainAct;
-    private static Navigator navigator = Navigator.INSTANCE;
+    private static NavigatorImpl navigator = NavigatorImpl.INSTANCE;
 
     public void initializeToolbarManager(final MainActivity mainActivity, final Toolbar bar) {
         if (mainActivity == null || bar == null) {

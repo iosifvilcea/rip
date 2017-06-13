@@ -34,7 +34,7 @@ public enum DrawerManager {
     private static ActionBarDrawerToggle drawerToggle;
     private static DrawerLayout drawerLayout;
     private static WeakReference<MainActivity> mainAct;
-    private static Navigator navigator = Navigator.INSTANCE;
+    private static NavigatorImpl navigator = NavigatorImpl.INSTANCE;
     private static ToolbarManager toolbarManager = ToolbarManager.INSTANCE;
 
 
@@ -178,7 +178,7 @@ public enum DrawerManager {
             navigator.toSingleSub((String) item.getId());
 
         } else {
-            navigator.toFragmentWithId((Integer) item.getId());
+            navigator.goToFragment((Integer) item.getId());
         }
     }
 

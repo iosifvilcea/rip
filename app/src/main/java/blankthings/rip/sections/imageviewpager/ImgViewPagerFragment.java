@@ -1,4 +1,4 @@
-package blankthings.rip.sections;
+package blankthings.rip.sections.imageviewpager;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import blankthings.rip.R;
 import blankthings.rip.api.ApiController;
 import blankthings.rip.api.redditmodels.Thing;
-import blankthings.rip.navigation.Navigator;
+import blankthings.rip.navigation.NavigatorImpl;
 import blankthings.rip.sections.base.BaseFragment;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +62,7 @@ public class ImgViewPagerFragment extends BaseFragment {
 
 
     private void fetchListings() {
-        Navigator.INSTANCE.startLoading();
+        NavigatorImpl.INSTANCE.startLoading();
         ApiController.getInstance().listingRequest(
                 "EarthPorn",
                 ApiController.SortType.HOT,
@@ -76,7 +76,7 @@ public class ImgViewPagerFragment extends BaseFragment {
     private Callback<Thing> listingCallback = new Callback<Thing>() {
         @Override
         public void onResponse(Call<Thing> call, Response<Thing> response) {
-            Navigator.INSTANCE.stopLoading();
+            NavigatorImpl.INSTANCE.stopLoading();
             if (response.isSuccessful()) {
                 Log.e(TAG, "Successful.");
                 Thing listings = response.body();
@@ -97,7 +97,7 @@ public class ImgViewPagerFragment extends BaseFragment {
 
         @Override
         public void onFailure(Call<Thing> call, Throwable t) {
-            Navigator.INSTANCE.stopLoading();
+            NavigatorImpl.INSTANCE.stopLoading();
             Log.e(TAG, t.getMessage());
         }
     };

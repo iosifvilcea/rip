@@ -15,6 +15,9 @@ import retrofit2.http.Query;
 public interface Endpoints {
 
     String BASE_URL = "http://reddit.com/";
+    String PRIVACY_URL = "https://www.reddit.com/help/privacypolicy/";
+    String TERMS_URL = "https://www.reddit.com/help/useragreement";
+    String COPYRIGHT_URL = "https://www.reddit.com/help/contentpolicy/";
 
     @GET("/r/{subreddit}/{sort}.json")
     Call<Thing> getTopListings(@Path("subreddit") String subreddit,

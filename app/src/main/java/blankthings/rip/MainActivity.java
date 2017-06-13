@@ -7,23 +7,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import blankthings.rip.navigation.DrawerManager;
-import blankthings.rip.navigation.Navigator;
+import blankthings.rip.navigation.NavigationContract;
+import blankthings.rip.navigation.NavigatorImpl;
 import blankthings.rip.navigation.ToolbarManager;
-import blankthings.rip.sections.album.AlbumFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationContract.HasNavigator {
 
     private final static String TAG = MainActivity.class.getSimpleName();
 
-    private final Navigator navigator = Navigator.INSTANCE;
+    private NavigationContract.Navigator navigator;
     private ActionBarDrawerToggle drawerToggle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        navigator.initializeNavigator(this);
+        navigator = new NavigatorImpl(this);
         setupNavigationManagers();
 
         navigator.toHome();
@@ -49,21 +50,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     @Override
+    public NavigationContract.Navigator getNavigator() {
+        return navigator;
+    }
+
+
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
     }
 
 
-    public void setupInitialFragment() {
-        final AlbumFragment albumFragment = AlbumFragment.newInstance("OldSchoolCool");
-        navigator.addFragment(albumFragment, "home");
-    }
-
-
     @Override
     public void onBackPressed() {
-        final boolean wasBackPressHandled = navigator.back();
+        final boolean wasBackPressHandled = navigator.goBack();
         if (!wasBackPressHandled) {
             super.onBackPressed();
         }
